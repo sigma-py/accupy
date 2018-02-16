@@ -13,7 +13,7 @@ from .__about__ import (
     __status__,
     )
 
-from .main import knuth_sum
+from .main import knuth_sum, decker_sum
 
 try:
     import pipdate
