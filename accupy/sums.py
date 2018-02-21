@@ -51,6 +51,30 @@ def oro_sum(p):
 
 
 def generate_ill_conditioned_sum(n, c):
+    # From <https://doi.org/10.1137/030601818>:
+    # Ill-conditioned sums of length 2n are generated from dot products of
+    # length n using Algorithm 3.3 (TwoProduct) and randomly permuting the
+    # summands.
+    from mpmath import mp
+    import numpy
+    x, y, d, C = generate_ill_conditioned_dot_product(n, c)
+
+    res = [list(prod_fma(xx, yy)) for xx, yy in zip(x, y)]
+
+    out = numpy.random.permutation(
+        [item for sublist in res for item in sublist]
+        )
+
+    def sum_exact(p):
+        mp.dps = 100
+        # convert to list first, see
+        # <https://github.com/fredrik-johansson/mpmath/pull/385>
+        return float(mp.fsum(p))
+
+    return out, sum_exact(out)
+
+
+def generate_ill_conditioned_dot_product(n, c):
     '''n ... length of vector
     c ... target condition number
     '''

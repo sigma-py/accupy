@@ -7,14 +7,17 @@ import numpy
 import accupy
 
 
-def test_ill_conditioned():
-    x, y, d, c = accupy.generate_ill_conditioned_sum(10, 1.0e16)
-    print(x)
-    print(y)
-    print(c)
-    print()
-    print(d)
-    print(numpy.dot(x, y))
+def test_ill_conditioned_sum():
+    p, exact = accupy.generate_ill_conditioned_sum(10, 1.0e18)
+    print(p)
+    print(exact)
+    print(numpy.sum(p))
+    print(sum(p))
+    s = 0.0
+    for item in p:
+        s += item
+    print(s)
+    print(accupy.oro_sum(p))
     return
 
 
@@ -62,9 +65,10 @@ def test_prod():
     a = 2.0
     b = 1.0e10
     x, y = accupy.prod(a, b)
-    print(x, y)
+    assert x == 2.0e10
+    assert y == 0.0
     return
 
 
 if __name__ == '__main__':
-    test_prod()
+    test_ill_conditioned_sum()
