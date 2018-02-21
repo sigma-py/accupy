@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 #
+import numpy
 import pyfma
 
-from .sums import oro_sum
+from .sums import oro_sum, knuth_sum
 
 
 def split(a):
@@ -40,11 +41,39 @@ def prod2_fma(a, b):
     return x, y
 
 
-def dot1(x, y, K=1, prod=prod2_fma):
+def dot1(x, y, K=1, prod2=prod2_fma):
     '''Algorithm 5.1. A first dot product algorithm.
     in <https://doi.org/10.1137/030601818>.
     '''
     [r0, r1] = prod2(x, y)
-    print(r0, r1)
-    exit(1)
+    r = numpy.concatenate([r0, r1])
     return oro_sum(r, K)
+
+
+def dot2(x, y, prod2=prod2_fma):
+    '''Algorithm 5.3. Dot product in twice the working precision.
+    in <https://doi.org/10.1137/030601818>.
+    '''
+    p, s = prod2(x[0], y[0])
+    n = len(x)
+    for k in range(1, n):
+        h, r = prod2(x[k], y[k])
+        p, q = knuth_sum(p, h)
+        s += q+r
+    return p + s
+
+
+def dotK(x, y, K=2, prod2=prod2_fma):
+    '''Algorithm 5.10. Dot product algorithm in K-fold working precision,
+    K >= 3.
+    '''
+    r0 = numpy.empty(x.shape)
+    r1 = numpy.empty(x.shape)
+    p, r0[0] = prod2(x[0], y[0])
+    n = len(x)
+    for k in range(1, n):
+        h, r0[k] = prod2(x[k], y[k])
+        p, r1[k-1] = knuth_sum(p, h)
+    r1[-1] = p
+    r = numpy.concatenate([r0, r1])
+    return oro_sum(r, K-1)

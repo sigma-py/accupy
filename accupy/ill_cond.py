@@ -33,8 +33,6 @@ def generate_ill_conditioned_dot_product(n, c):
     from mpmath import mp
     import numpy
 
-    numpy.random.seed(0)
-
     # Algorithm 6.1 from
     #
     # ACCURATE SUM AND DOT PRODUCT,
