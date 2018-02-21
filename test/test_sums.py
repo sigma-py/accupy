@@ -8,7 +8,7 @@ import accupy
 
 
 def test_ill_conditioned_sum():
-    p, exact = accupy.generate_ill_conditioned_sum(10, 1.0e18)
+    p, exact = accupy.generate_ill_conditioned_sum(10, 1.0e20)
     print(p)
     print(exact)
     print(numpy.sum(p))
@@ -18,6 +18,7 @@ def test_ill_conditioned_sum():
         s += item
     print(s)
     print(accupy.oro_sum(p))
+    print(accupy.kahan_sum(p))
     return
 
 

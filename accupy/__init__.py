@@ -13,6 +13,8 @@ from .__about__ import (
     __status__,
     )
 
+from .ill_cond import *
+from .prod import *
 from .sums import *
 
 try:
