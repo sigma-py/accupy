@@ -13,8 +13,8 @@ from .__about__ import (
     __status__,
     )
 
+from .dot import *
 from .ill_cond import *
-from .prod import *
 from .sums import *
 
 try:

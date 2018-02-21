@@ -39,16 +39,30 @@ def decker_sum(a, b):
     return x, y
 
 
-def oro_sum(p):
+def vec_sum(p):
+    '''Algorithm 4.3. Error-free vector transformation for summation.
+
+    The vector p is transformed without changing the sum, and p_n is replaced
+    by float(sum(p)). Kahan [21] calls this a "distillation algorithm."
+    '''
+    for i in range(1, len(p)):
+        p[i], p[i-1] = knuth_sum(p[i], p[i-1])
+    return p
+
+
+def oro_sum(p, K=1):
     '''From
 
     T. Ogita, S.M. Rump, and S. Oishi.
     Accurate Sum and Dot Product,
     SIAM J. Sci. Comput., 26(6), 1955–1988 (34 pages).
     <https://doi.org/10.1137/030601818>.
+
+    Algorithm 4.8. Summation as in K-fold precision by (K − 1)-fold error-free
+    vector transformation.
     '''
-    for i in range(1, len(p)):
-        p[i], p[i-1] = knuth_sum(p[i], p[i-1])
+    for _ in range(K):
+        p = vec_sum(p)
     return sum(p[:-1]) + p[-1]
 
 

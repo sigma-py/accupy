@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-from .prod import prod_fma
+from .dot import prod2_fma
 
 
 def generate_ill_conditioned_sum(n, c):
@@ -12,11 +12,9 @@ def generate_ill_conditioned_sum(n, c):
     import numpy
     x, y, d, C = generate_ill_conditioned_dot_product(n, c)
 
-    res = [list(prod_fma(xx, yy)) for xx, yy in zip(x, y)]
+    res = numpy.array(prod2_fma(x, y))
 
-    out = numpy.random.permutation(
-        [item for sublist in res for item in sublist]
-        )
+    out = numpy.random.permutation(res.flatten())
 
     def sum_exact(p):
         mp.dps = 100
