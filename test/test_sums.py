@@ -58,5 +58,13 @@ def test_sum():
     return
 
 
+def test_prod():
+    a = 2.0
+    b = 1.0e10
+    x, y = accupy.prod(a, b)
+    print(x, y)
+    return
+
+
 if __name__ == '__main__':
-    test_ill_conditioned()
+    test_prod()

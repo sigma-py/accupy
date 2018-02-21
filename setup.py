@@ -35,6 +35,7 @@ setup(
     install_requires=[
         'numpy',
         'pipdate',
+        'pyfma',
         ],
     description='accurate sums and products for Python',
     long_description=read('README.rst'),

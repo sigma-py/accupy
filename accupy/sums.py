@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 #
+import pyfma
 
 
 def knuth_sum(a, b):
@@ -77,8 +78,9 @@ def generate_ill_conditioned_sum(n, c):
     e[-1] = 0
 
     # generate first half of vectors x, y
-    x[:n2] = (2*numpy.random.rand(n2) - 1) * 2**e
-    y[:n2] = (2*numpy.random.rand(n2) - 1) * 2**e
+    rx, ry = numpy.random.rand(2, n2)
+    x[:n2] = (2*rx - 1) * 2**e
+    y[:n2] = (2*ry - 1) * 2**e
 
     def dot_exact(x, y):
         mp.dps = 100
@@ -90,12 +92,13 @@ def generate_ill_conditioned_sum(n, c):
     #     generate x_i, y_i such that (*) x(v)’*y(v) ~ 2^e(i-n2)
     # generate exponents for second half
     e = numpy.rint(numpy.linspace(b/2, 0, n-n2)).astype(int)
+    rx, ry = numpy.random.rand(2, n2)
     for i in range(n2, n):
         # x_i random with generated exponent
-        x[i] = (2*numpy.random.rand(1)[0] - 1) * 2**e[i-n2]
+        x[i] = (2*rx[i-n2] - 1) * 2**e[i-n2]
         # y_i according to (*)
         y[i] = (
-            (2*numpy.random.rand(1)[0] - 1) * 2**e[i-n2]
+            (2*ry[i-n2] - 1) * 2**e[i-n2]
             - dot_exact(x[:i+1], y[:i+1])
             ) / x[i]
 
@@ -106,3 +109,32 @@ def generate_ill_conditioned_sum(n, c):
     C = 2 * dot_exact(abs(x), abs(y)) / abs(d)
 
     return x, y, d, C
+
+
+def split(a):
+    '''Error-free splitting of a floating-point number into two parts.
+    '''
+    s = 27
+    factor = 2*s + 1
+    c = factor * a
+    x = c - (c-a)
+    y = a - x
+    return x, y
+
+
+def prod(a, b):
+    '''Error-free transformation of the product of two floating-point numbers.
+    '''
+    x = a * b
+    a1, a2 = split(a)
+    b1, b2 = split(b)
+    y = a2*b2 - (((x - a1*b1) - a2*b1) - a1*b2)
+    return x, y
+
+
+def prod_fma(a, b):
+    '''Error-free transformation of a product using Fused-Multiply-and-Add.
+    '''
+    x = a * b
+    y = pyfma.fma(a, b, -x)
+    return x, y

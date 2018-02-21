@@ -13,7 +13,7 @@ from .__about__ import (
     __status__,
     )
 
-from .sums import knuth_sum, decker_sum, oro_sum, generate_ill_conditioned_sum
+from .sums import *
 
 try:
     import pipdate
