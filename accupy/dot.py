@@ -41,15 +41,6 @@ def prod2_fma(a, b):
     return x, y
 
 
-# def dot1(x, y, K=1, prod2=prod2_fma):
-#     '''Algorithm 5.1. A first dot product algorithm.
-#     in <https://doi.org/10.1137/030601818>.
-#     '''
-#     [r0, r1] = prod2(x, y)
-#     r = numpy.concatenate([r0, r1])
-#     return fsum(r, K)
-
-
 def dot2(x, y, prod2=prod2_fma):
     '''Algorithm 5.3. Dot product in twice the working precision.
     in <https://doi.org/10.1137/030601818>.

@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 #
+import math
+
 import numpy
 
 import _accupy
@@ -66,7 +68,7 @@ def distill(p):
     return _accupy.distill2(q).reshape(p.shape)
 
 
-def fsum(p, K=2):
+def ksum(p, K=2):
     '''From
 
     T. Ogita, S.M. Rump, and S. Oishi.
@@ -77,9 +79,18 @@ def fsum(p, K=2):
     Algorithm 4.8. Summation as in K-fold precision by (K−1)-fold error-free
     vector transformation.
     '''
+    # Don't override the input data.
+    q = p.copy()
     for _ in range(1, K):
-        p = distill(p)
-    return sum(p[:-1]) + p[-1]
+        distill(q)
+    return sum(q[:-1]) + q[-1]
+
+
+math_fsum_vec = numpy.vectorize(math.fsum, signature="(m)->()")
+
+
+def fsum(p):
+    return math_fsum_vec(p.T).T
 
 
 def kahan_sum(a, axis=0):

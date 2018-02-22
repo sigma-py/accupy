@@ -2,31 +2,54 @@
 #
 from __future__ import division
 
+import matplotlib.pyplot as plt
 import numpy
+import pytest
 
 import accupy
 
+numpy.random.seed(0)
 
-def test_ill_conditioned_sum():
-    import math
-    p, exact = accupy.generate_ill_conditioned_sum(100, 1.0e38)
-    print()
-    print(exact)
-    print()
-    print(numpy.sum(p))
-    s = 0.0
-    for item in p:
-        s += item
-    print(s)
-    print(sum(p))
-    print()
-    print(math.fsum(p))
-    print()
-    print(accupy.kahan_sum(p))
-    print(accupy.fsum(p, K=1))
-    print(accupy.fsum(p, K=2))
-    print(accupy.fsum(p, K=3))
-    print(accupy.fsum(p, K=4))
+
+@pytest.mark.parametrize('cond', [1.0, 1.0e10, 1.0e15])
+def test_ill_conditioned_sum(cond):
+    p, ref = accupy.generate_ill_conditioned_sum(100, cond)
+    assert abs(accupy.fsum(p, K=2) - ref) < 1.0e-15 * abs(ref)
+    return
+
+
+def test_accuracy_comparison():
+    kernels = [
+        numpy.sum,
+        lambda p: accupy.ksum(p, K=2),
+        lambda p: accupy.ksum(p, K=3),
+        accupy.fsum,
+        ]
+    labels = [
+        'numpy.sum',
+        'ksum[2]',
+        'ksum[3]',
+        'fsum',
+        ]
+    x = [10**k for k in range(0, 37, 3)]
+    data = numpy.empty((len(x), len(kernels)))
+    condition_numbers = numpy.empty(len(x))
+    for k, target_cond in enumerate(x):
+        p, ref, C = accupy.generate_ill_conditioned_sum(1000, target_cond)
+        condition_numbers[k] = C
+        data[k] = [abs(kernel(p) - ref) / abs(ref) for kernel in kernels]
+
+    for label, d in zip(labels, data.T):
+        plt.loglog(condition_numbers, d, label=label)
+
+    plt.legend()
+    plt.grid()
+    plt.ylim(5.0e-18, 1.0)
+    plt.xlabel('condition number')
+    plt.ylabel('error')
+
+    # plt.show()
+    plt.savefig('accuracy-sums.png', transparent=True)
     return
 
 
@@ -71,4 +94,4 @@ def test_sum():
 
 
 if __name__ == '__main__':
-    test_ill_conditioned_sum()
+    test_accuracy_comparison()

@@ -1,38 +1,35 @@
 # -*- coding: utf-8 -*-
 #
+import math
+
+from mpmath import mp
+import numpy
+
 from .dot import prod2_fma
 
 
-def generate_ill_conditioned_sum(n, c):
+def generate_ill_conditioned_sum(n, c, dps=100):
     # From <https://doi.org/10.1137/030601818>:
     # Ill-conditioned sums of length 2n are generated from dot products of
     # length n using Algorithm 3.3 (TwoProduct) and randomly permuting the
     # summands.
-    from mpmath import mp
-    import numpy
-    x, y, d, C = generate_ill_conditioned_dot_product(n, c)
+    x, y, _, C = generate_ill_conditioned_dot_product(n, c, dps)
 
     res = numpy.array(prod2_fma(x, y))
 
     out = numpy.random.permutation(res.flatten())
 
     def sum_exact(p):
-        mp.dps = 100
-        # convert to list first, see
-        # <https://github.com/fredrik-johansson/mpmath/pull/385>
-        return float(mp.fsum(p))
+        mp.dps = dps
+        return mp.fsum(p)
 
-    return out, sum_exact(out)
+    return out, sum_exact(out), C
 
 
-def generate_ill_conditioned_dot_product(n, c):
+def generate_ill_conditioned_dot_product(n, c, dps=100):
     '''n ... length of vector
     c ... target condition number
     '''
-    import math
-    from mpmath import mp
-    import numpy
-
     # Algorithm 6.1 from
     #
     # ACCURATE SUM AND DOT PRODUCT,
@@ -56,10 +53,10 @@ def generate_ill_conditioned_dot_product(n, c):
     y[:n2] = (2*ry - 1) * 2**e
 
     def dot_exact(x, y):
-        mp.dps = 100
+        mp.dps = dps
         # convert to list first, see
         # <https://github.com/fredrik-johansson/mpmath/pull/385>
-        return float(mp.fdot(x.tolist(), y.tolist()))
+        return mp.fdot(x.tolist(), y.tolist())
 
     # for i=n2+1:n and v=1:i,
     #     generate x_i, y_i such that (*) x(v)’*y(v) ~ 2^e(i-n2)
