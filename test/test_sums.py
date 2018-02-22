@@ -8,17 +8,25 @@ import accupy
 
 
 def test_ill_conditioned_sum():
-    p, exact = accupy.generate_ill_conditioned_sum(10, 1.0e20)
-    print(p)
+    import math
+    p, exact = accupy.generate_ill_conditioned_sum(100, 1.0e38)
+    print()
     print(exact)
+    print()
     print(numpy.sum(p))
-    print(sum(p))
     s = 0.0
     for item in p:
         s += item
     print(s)
-    print(accupy.oro_sum(p))
+    print(sum(p))
+    print()
+    print(math.fsum(p))
+    print()
     print(accupy.kahan_sum(p))
+    print(accupy.fsum(p, K=1))
+    print(accupy.fsum(p, K=2))
+    print(accupy.fsum(p, K=3))
+    print(accupy.fsum(p, K=4))
     return
 
 
@@ -53,7 +61,7 @@ def test_sum():
     n = 10000
     # p = numpy.float16(1.0) / numpy.arange(1, n)
     p = numpy.random.rand(n) / n
-    s = accupy.oro_sum(p)
+    s = accupy.fsum(p)
     print(s)
     s2 = 0.0
     for r in p:

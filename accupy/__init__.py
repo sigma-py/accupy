@@ -13,6 +13,9 @@ from .__about__ import (
     __status__,
     )
 
+# https://github.com/pybind/pybind11/issues/1004
+# from _accupy import *
+
 from .dot import *
 from .ill_cond import *
 from .sums import *

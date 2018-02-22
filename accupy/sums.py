@@ -50,7 +50,7 @@ def vec_sum(p):
     return p
 
 
-def oro_sum(p, K=1):
+def fsum(p, K=2):
     '''From
 
     T. Ogita, S.M. Rump, and S. Oishi.
@@ -58,10 +58,10 @@ def oro_sum(p, K=1):
     SIAM J. Sci. Comput., 26(6), 1955–1988 (34 pages).
     <https://doi.org/10.1137/030601818>.
 
-    Algorithm 4.8. Summation as in K-fold precision by (K − 1)-fold error-free
+    Algorithm 4.8. Summation as in K-fold precision by (K−1)-fold error-free
     vector transformation.
     '''
-    for _ in range(K):
+    for _ in range(1, K):
         p = vec_sum(p)
     return sum(p[:-1]) + p[-1]
 

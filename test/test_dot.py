@@ -2,6 +2,8 @@
 #
 from __future__ import division
 
+import math
+
 import numpy
 
 import accupy
@@ -19,13 +21,18 @@ def test_prod():
 
 
 def test_dot1():
-    x, y, d, C = accupy.generate_ill_conditioned_dot_product(10, 1.0e20)
+    x, y, d, C = accupy.generate_ill_conditioned_dot_product(10, 1.0e30)
     print(d)
     print()
     print(numpy.dot(x, y))
-    print(accupy.dot1(x, y))
-    print(accupy.dot2(x, y))
-    print(accupy.dotK(x, y))
+    print()
+    # print(accupy.dot1(x, y))
+    print(accupy.dotK(x, y, K=1))
+    print(accupy.dotK(x, y, K=2))
+    print(accupy.dotK(x, y, K=3))
+
+    a, b = accupy.prod2_fma(x, y)
+    print(math.fsum(numpy.concatenate([a, b])))
     return
 
 
