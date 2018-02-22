@@ -47,7 +47,7 @@ def decker_sum(a, b):
 #     '''Algorithm 4.3. Error-free vector transformation for summation.
 #
 #     The vector p is transformed without changing the sum, and p_n is replaced
-#     by float(sum(p)). Kahan [21] calls this a "distillation algorithm."
+#     by float(sum(p)). Kahan [21] calls this a 'distillation algorithm.'
 #     '''
 #     for i in range(1, len(p)):
 #         p[i], p[i-1] = knuth_sum(p[i], p[i-1])
@@ -58,7 +58,7 @@ def distill(p):
     '''Algorithm 4.3. Error-free vector transformation for summation.
 
     The vector p is transformed without changing the sum, and p_n is replaced
-    by float(sum(p)). Kahan [21] calls this a "distillation algorithm."
+    by float(sum(p)). Kahan [21] calls this a 'distillation algorithm.'
     '''
     # Append newaxis to account for len(p.shape)==1
     p = p[..., numpy.newaxis]
@@ -85,18 +85,28 @@ def ksum(p, K=2):
     return sum(q[:-1]) + q[-1]
 
 
-_math_fsum_vec = numpy.vectorize(math.fsum, signature="(m)->()")
+_math_fsum_vec = numpy.vectorize(math.fsum, signature='(m)->()')
 
 
 def fsum(p):
     return _math_fsum_vec(p.T).T
 
 
-_kahan_vec = numpy.vectorize(_accupy.kahan, signature="(m)->()")
+_kahan_vec = numpy.vectorize(_accupy.kahan, signature='(m)->()')
+
 
 def kahan_sum(p):
-    '''Kahan summation of the numpy array `a` along axis `axis`.
+    '''Kahan summation
+    <https://en.wikipedia.org/wiki/Kahan_summation_algorithm>.
     '''
-    # See <https://en.wikipedia.org/wiki/Kahan_summation_algorithm> for
-    # details.
     return _kahan_vec(p.T).T
+
+
+_neumaier_vec = numpy.vectorize(_accupy.neumaier, signature='(m)->()')
+
+
+def neumaier_sum(p):
+    '''Neumaier summation
+    <https://en.wikipedia.org/wiki/Kahan_summation_algorithm#Further_enhancements>.
+    '''
+    return _neumaier_vec(p.T).T
