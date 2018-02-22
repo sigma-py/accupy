@@ -23,7 +23,11 @@ def generate_ill_conditioned_sum(n, c, dps=100):
         mp.dps = dps
         return mp.fsum(p)
 
-    return out, sum_exact(out), C
+    exact = sum_exact(out)
+    # cond = sum_exact(numpy.abs(out)) / abs(exact)
+    cond = C / 2
+
+    return out, exact, cond
 
 
 def generate_ill_conditioned_dot_product(n, c, dps=100):

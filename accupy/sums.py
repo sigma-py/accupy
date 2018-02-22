@@ -62,7 +62,6 @@ def distill(p):
     '''
     # Append newaxis to account for len(p.shape)==1
     p = p[..., numpy.newaxis]
-
     q = p.reshape(p.shape[0], numpy.prod(p.shape[1:]))
     return _accupy.distill(q).reshape(p.shape[:-1])
 
