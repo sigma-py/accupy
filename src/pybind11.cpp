@@ -10,7 +10,7 @@ namespace py = pybind11;
 //
 // Keep an eye on <https://github.com/pybind/pybind11/issues/1294> for a
 // potentially better treatment of the dimensionality.
-py::array_t<double>
+void
 distill(py::array_t<double, py::array::c_style | py::array::forcecast> p) {
   auto r = p.mutable_unchecked<2>();
   for (ssize_t i = 1; i < r.shape(0); i++) {
@@ -22,9 +22,28 @@ distill(py::array_t<double, py::array::c_style | py::array::forcecast> p) {
       r(i-1, j) = y;
     }
   }
-  return p;
+}
+
+
+double
+kahan(py::array_t<double, py::array::c_style | py::array::forcecast> p) {
+  // Kahan summation.
+  // See <https://en.wikipedia.org/wiki/Kahan_summation_algorithm> for
+  // details.
+  auto r = p.unchecked<1>();
+
+  double s = 0.0;
+  double c = 0.0;
+  for (ssize_t i = 0; i < r.shape(0); i++) {
+    double y = r(i) - c;
+    double t = s + y;
+    c = (t-s) - y;
+    s = t;
+  }
+  return s;
 }
 
 PYBIND11_MODULE(_accupy, m) {
   m.def("distill", &distill);
+  m.def("kahan", &kahan);
 }

@@ -63,7 +63,8 @@ def distill(p):
     # Append newaxis to account for len(p.shape)==1
     p = p[..., numpy.newaxis]
     q = p.reshape(p.shape[0], numpy.prod(p.shape[1:]))
-    return _accupy.distill(q).reshape(p.shape[:-1])
+    _accupy.distill(q)
+    return q.reshape(p.shape[:-1])
 
 
 def ksum(p, K=2):
@@ -91,18 +92,11 @@ def fsum(p):
     return _math_fsum_vec(p.T).T
 
 
-def kahan_sum(a, axis=0):
+_kahan_vec = numpy.vectorize(_accupy.kahan, signature="(m)->()")
+
+def kahan_sum(p):
     '''Kahan summation of the numpy array `a` along axis `axis`.
     '''
     # See <https://en.wikipedia.org/wiki/Kahan_summation_algorithm> for
     # details.
-    k = axis % len(a.shape)
-    s = numpy.zeros(a.shape[:axis] + a.shape[k+1:])
-    c = numpy.zeros(s.shape)
-    for i in range(a.shape[axis]):
-        # http://stackoverflow.com/a/42817610/353337
-        y = a[(slice(None),) * k + (i,)] - c
-        t = s + y
-        c = (t - s) - y
-        s = t.copy()
-    return s
+    return _kahan_vec(p.T).T
