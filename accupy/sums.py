@@ -86,11 +86,11 @@ def ksum(p, K=2):
     return sum(q[:-1]) + q[-1]
 
 
-math_fsum_vec = numpy.vectorize(math.fsum, signature="(m)->()")
+_math_fsum_vec = numpy.vectorize(math.fsum, signature="(m)->()")
 
 
 def fsum(p):
-    return math_fsum_vec(p.T).T
+    return _math_fsum_vec(p.T).T
 
 
 def kahan_sum(a, axis=0):

@@ -2,6 +2,8 @@
 #
 from __future__ import division
 
+import math
+
 import matplotlib.pyplot as plt
 import numpy
 import pytest
@@ -18,15 +20,55 @@ def test_ill_conditioned_sum(cond):
     return
 
 
-def test_accuracy_comparison():
+def test_accuracy_comparison_rand():
     kernels = [
         numpy.sum,
+        accupy.kahan_sum,
         lambda p: accupy.ksum(p, K=2),
         lambda p: accupy.ksum(p, K=3),
         accupy.fsum,
         ]
     labels = [
         'numpy.sum',
+        'kahan_sum',
+        'ksum[2]',
+        'ksum[3]',
+        'fsum',
+        ]
+
+    exit(1)
+    n_range = [2**k for k in range(20)]
+    data = numpy.empty((len(n_range), len(kernels)))
+    for k, n in enumerate(n_range):
+        p = numpy.random.rand(n)
+        ref = math.fsum(p)
+        data[k] = [abs(kernel(p) - ref) / abs(ref) for kernel in kernels]
+
+    for label, d in zip(labels, data.T):
+        plt.loglog(n_range, d, label=label)
+
+    plt.legend()
+    plt.grid()
+    plt.ylim(5.0e-18, 1.0)
+    plt.xlabel('len(p)')
+    plt.ylabel('error')
+
+    plt.show()
+    # plt.savefig('accuracy-sums.png', transparent=True)
+    return
+
+
+def test_accuracy_comparison_illcond():
+    kernels = [
+        numpy.sum,
+        accupy.kahan_sum,
+        lambda p: accupy.ksum(p, K=2),
+        lambda p: accupy.ksum(p, K=3),
+        accupy.fsum,
+        ]
+    labels = [
+        'numpy.sum',
+        'kahan_sum',
         'ksum[2]',
         'ksum[3]',
         'fsum',
@@ -48,8 +90,8 @@ def test_accuracy_comparison():
     plt.xlabel('condition number')
     plt.ylabel('error')
 
-    # plt.show()
-    plt.savefig('accuracy-sums.png', transparent=True)
+    plt.show()
+    # plt.savefig('accuracy-sums.png', transparent=True)
     return
 
 
@@ -94,4 +136,4 @@ def test_sum():
 
 
 if __name__ == '__main__':
-    test_accuracy_comparison()
+    test_accuracy_comparison_illcond()
