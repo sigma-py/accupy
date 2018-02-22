@@ -63,6 +63,7 @@ setup(
     install_requires=[
         'numpy',
         'pipdate',
+        'pybind11 >= 2.2',
         'pyfma',
         ],
     description='accurate sums and products for Python',
