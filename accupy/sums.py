@@ -60,12 +60,11 @@ def distill(p):
     The vector p is transformed without changing the sum, and p_n is replaced
     by float(sum(p)). Kahan [21] calls this a "distillation algorithm."
     '''
-    if len(p.shape) == 1:
-        return _accupy.distill1(p)
+    # Append newaxis to account for len(p.shape)==1
+    p = p[..., numpy.newaxis]
 
-    assert len(p.shape) > 1
     q = p.reshape(p.shape[0], numpy.prod(p.shape[1:]))
-    return _accupy.distill2(q).reshape(p.shape)
+    return _accupy.distill(q).reshape(p.shape[:-1])
 
 
 def ksum(p, K=2):
