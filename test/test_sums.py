@@ -60,6 +60,7 @@ def test_accuracy_comparison_rand():
 
 def test_accuracy_comparison_illcond():
     kernels = [
+        sum,
         numpy.sum,
         accupy.kahan_sum,
         lambda p: accupy.ksum(p, K=2),
@@ -67,6 +68,7 @@ def test_accuracy_comparison_illcond():
         accupy.fsum,
         ]
     labels = [
+        'sum',
         'numpy.sum',
         'kahan_sum',
         'ksum[2]',
@@ -88,7 +90,7 @@ def test_accuracy_comparison_illcond():
     plt.grid()
     plt.ylim(5.0e-18, 1.0)
     plt.xlabel('condition number')
-    plt.ylabel('error')
+    plt.ylabel('relative error')
 
     plt.show()
     # plt.savefig('accuracy-sums.png', transparent=True)
