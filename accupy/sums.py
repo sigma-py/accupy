@@ -2,6 +2,8 @@
 #
 import numpy
 
+import _accupy
+
 
 def knuth_sum(a, b):
     '''Error-free transformation of the sum of two floating point numbers
@@ -39,15 +41,29 @@ def decker_sum(a, b):
     return x, y
 
 
-def vec_sum(p):
+# def distill_python(p):
+#     '''Algorithm 4.3. Error-free vector transformation for summation.
+#
+#     The vector p is transformed without changing the sum, and p_n is replaced
+#     by float(sum(p)). Kahan [21] calls this a "distillation algorithm."
+#     '''
+#     for i in range(1, len(p)):
+#         p[i], p[i-1] = knuth_sum(p[i], p[i-1])
+#     return p
+
+
+def distill(p):
     '''Algorithm 4.3. Error-free vector transformation for summation.
 
     The vector p is transformed without changing the sum, and p_n is replaced
     by float(sum(p)). Kahan [21] calls this a "distillation algorithm."
     '''
-    for i in range(1, len(p)):
-        p[i], p[i-1] = knuth_sum(p[i], p[i-1])
-    return p
+    if len(p.shape) == 1:
+        return _accupy.distill1(p)
+
+    assert len(p.shape) > 1
+    q = p.reshape(p.shape[0], numpy.prod(p.shape[1:]))
+    return _accupy.distill2(q).reshape(p.shape)
 
 
 def fsum(p, K=2):
@@ -62,7 +78,7 @@ def fsum(p, K=2):
     vector transformation.
     '''
     for _ in range(1, K):
-        p = vec_sum(p)
+        p = distill(p)
     return sum(p[:-1]) + p[-1]
 
 

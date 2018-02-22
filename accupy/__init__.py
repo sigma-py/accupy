@@ -14,7 +14,7 @@ from .__about__ import (
     )
 
 # https://github.com/pybind/pybind11/issues/1004
-# from _accupy import *
+from _accupy import *
 
 from .dot import *
 from .ill_cond import *
