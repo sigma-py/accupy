@@ -61,7 +61,7 @@ def test_accuracy_comparison_illcond():
 def test_speed_comparison1():
     perfplot.save(
         'speed-comparison1.png',
-        setup=lambda n: numpy.random.rand(n),
+        setup=lambda n: numpy.random.rand(n, 100),
         kernels=[
             lambda p: numpy.sum(p, axis=0),
             accupy.kahan_sum,
@@ -76,8 +76,35 @@ def test_speed_comparison1():
             'accupy.ksum[3]',
             'accupy.fsum',
             ],
-        n_range=[2**k for k in range(18)],
-        title='Sum(random(n))',
+        n_range=[2**k for k in range(15)],
+        title='Sum(random(n, 100))',
+        xlabel='n',
+        logx=True,
+        logy=True,
+        )
+    return
+
+
+def test_speed_comparison2():
+    perfplot.save(
+        'speed-comparison2.png',
+        setup=lambda n: numpy.random.rand(100, n),
+        kernels=[
+            lambda p: numpy.sum(p, axis=0),
+            accupy.kahan_sum,
+            lambda p: accupy.ksum(p, K=2),
+            lambda p: accupy.ksum(p, K=3),
+            accupy.fsum,
+            ],
+        labels=[
+            'numpy.sum',
+            'kahan_sum',
+            'accupy.ksum[2]',
+            'accupy.ksum[3]',
+            'accupy.fsum',
+            ],
+        n_range=[2**k for k in range(15)],
+        title='Sum(random(100, n))',
         xlabel='n',
         logx=True,
         logy=True,
