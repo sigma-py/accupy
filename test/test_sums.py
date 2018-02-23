@@ -14,12 +14,15 @@ numpy.random.seed(0)
 
 @pytest.mark.parametrize('cond', [1.0, 1.0e10, 1.0e15])
 def test_ill_conditioned_sum(cond):
-    p, ref = accupy.generate_ill_conditioned_sum(100, cond)
-    assert abs(accupy.fsum(p, K=2) - ref) < 1.0e-15 * abs(ref)
+    p, ref, _ = accupy.generate_ill_conditioned_sum(100, cond)
+    assert abs(accupy.ksum(p, K=2) - ref) < 1.0e-15 * abs(ref)
     return
 
 
-def test_accuracy_comparison_illcond():
+@pytest.mark.parametrize('x', [
+    [10**k for k in range(5)]
+    ])
+def test_accuracy_comparison_illcond(x):
     kernels = [
         sum,
         numpy.sum,
@@ -36,7 +39,6 @@ def test_accuracy_comparison_illcond():
         'accupy.ksum[3]',
         'accupy.fsum',
         ]
-    x = [10**k for k in range(0, 37, 3)]
     data = numpy.empty((len(x), len(kernels)))
     condition_numbers = numpy.empty(len(x))
     for k, target_cond in enumerate(x):
@@ -58,7 +60,10 @@ def test_accuracy_comparison_illcond():
     return
 
 
-def test_speed_comparison1():
+@pytest.mark.parametrize('n_range', [
+    [2**k for k in range(5)]
+    ])
+def test_speed_comparison1(n_range):
     perfplot.save(
         'speed-comparison1.png',
         setup=lambda n: numpy.random.rand(n, 100),
@@ -76,7 +81,7 @@ def test_speed_comparison1():
             'accupy.ksum[3]',
             'accupy.fsum',
             ],
-        n_range=[2**k for k in range(15)],
+        n_range=n_range,
         title='Sum(random(n, 100))',
         xlabel='n',
         logx=True,
@@ -85,7 +90,10 @@ def test_speed_comparison1():
     return
 
 
-def test_speed_comparison2():
+@pytest.mark.parametrize('n_range', [
+    [2**k for k in range(5)]
+    ])
+def test_speed_comparison2(n_range):
     perfplot.save(
         'speed-comparison2.png',
         setup=lambda n: numpy.random.rand(100, n),
@@ -103,7 +111,7 @@ def test_speed_comparison2():
             'accupy.ksum[3]',
             'accupy.fsum',
             ],
-        n_range=[2**k for k in range(15)],
+        n_range=n_range,
         title='Sum(random(100, n))',
         xlabel='n',
         logx=True,
@@ -153,5 +161,5 @@ def test_sum():
 
 
 if __name__ == '__main__':
-    # test_accuracy_comparison_illcond()
-    test_speed_comparison1()
+    # test_accuracy_comparison_illcond([10**k for k in range(0, 37, 3)])
+    test_speed_comparison1(n_range=[2**k for k in range(15)])

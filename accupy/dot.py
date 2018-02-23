@@ -3,7 +3,7 @@
 import numpy
 import pyfma
 
-from .sums import fsum, knuth_sum
+from .sums import ksum, knuth_sum
 
 
 def split(a):
@@ -67,4 +67,4 @@ def dotK(x, y, K=2, prod2=prod2_fma):
         p, r1[k-1] = knuth_sum(p, h)
     r1[-1] = p
     r = numpy.concatenate([r0, r1])
-    return fsum(r, K-1)
+    return ksum(r, K-1)
