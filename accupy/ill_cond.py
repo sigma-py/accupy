@@ -2,8 +2,8 @@
 #
 import math
 
-from mpmath import mp
 import numpy
+from mpmath import mp
 
 from .dot import prod2_fma
 

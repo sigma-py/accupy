@@ -61,6 +61,7 @@ setup(
     author=about['__author__'],
     author_email=about['__email__'],
     install_requires=[
+        'mpmath',
         'numpy',
         'pipdate',
         'pybind11 >= 2.2',

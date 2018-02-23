@@ -1,10 +1,10 @@
 # accupy
 
-Accurate sums and products for Python.
+Accurate sums and (dot) products for Python.
 
 [![CircleCI](https://img.shields.io/circleci/project/github/nschloe/accupy/master.svg)](https://circleci.com/gh/nschloe/accupy/tree/master)
 [![codecov](https://img.shields.io/codecov/c/github/nschloe/accupy.svg)](https://codecov.io/gh/nschloe/accupy)
-[![awesome](https://img.shields.io/badge/awesome-yes-brightgreen.svg)](https://img.shields.io/badge/awesome-yes-brightgreen.svg)
+[![accurate](https://img.shields.io/badge/accurate-very-brightgreen.svg)](https://img.shields.io/badge/accurate-very-brightgreen.svg)
 [![PyPi Version](https://img.shields.io/pypi/v/accupy.svg)](https://pypi.python.org/pypi/accupy)
 [![GitHub stars](https://img.shields.io/github/stars/nschloe/accupy.svg?style=social&label=Stars)](https://github.com/nschloe/accupy)
 
