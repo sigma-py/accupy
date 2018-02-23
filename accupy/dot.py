@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 #
-import numpy
 import pyfma
+
+import _accupy
 
 from .sums import ksum, knuth_sum
 
@@ -58,13 +59,5 @@ def kdot(x, y, K=2, prod2=prod2_fma):
     '''Algorithm 5.10. Dot product algorithm in K-fold working precision,
     K >= 3.
     '''
-    r0 = numpy.empty(x.shape)
-    r1 = numpy.empty(x.shape)
-    p, r0[0] = prod2(x[0], y[0])
-    n = len(x)
-    for k in range(1, n):
-        h, r0[k] = prod2(x[k], y[k])
-        p, r1[k-1] = knuth_sum(p, h)
-    r1[-1] = p
-    r = numpy.concatenate([r0, r1])
+    r = _accupy.kdot_helper(x, y)
     return ksum(r, K-1)
