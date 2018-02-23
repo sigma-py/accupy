@@ -42,9 +42,26 @@ Let's compare the methods.
 
 #### Accuracy comparison
 
-<img src="https://nschloe.github.io/accupy/accuracy-comparison.png" width="40%">
+<img src="https://nschloe.github.io/accupy/accuracy-sums.png" width="40%">
 
-For the 
+As expected, the naive
+[sum](https://docs.python.org/3/library/functions.html#sum) performs very badly
+with ill-conditioned sums; likewise for
+[`numpy.sum`](https://docs.scipy.org/doc/numpy/reference/generated/numpy.sum.html)
+which uses pairwise summation. Kahan summation not significantly better; [this,
+too, is
+expected](https://en.wikipedia.org/wiki/Kahan_summation_algorithm#Accuracy).
+
+Computing the sum with 2-fold accuracy in `accupy.ksum` gives the correct
+result if the condition is at most in the range of machine precision; further
+increasing `K` helps with worse conditions.
+
+Shewchuck's algorithm in `math.fsum` always gives the correct result to full
+floating point precision.
+
+
+#### Speed comparison
+
 
 ### References
 
