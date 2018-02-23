@@ -2,10 +2,9 @@
 #
 from __future__ import division
 
-import math
-
 import matplotlib.pyplot as plt
 import numpy
+import perfplot
 import pytest
 
 import accupy
@@ -20,50 +19,11 @@ def test_ill_conditioned_sum(cond):
     return
 
 
-def test_accuracy_comparison_rand():
-    kernels = [
-        numpy.sum,
-        accupy.kahan_sum,
-        lambda p: accupy.ksum(p, K=2),
-        lambda p: accupy.ksum(p, K=3),
-        accupy.fsum,
-        ]
-    labels = [
-        'numpy.sum',
-        'kahan_sum',
-        'ksum[2]',
-        'ksum[3]',
-        'fsum',
-        ]
-
-    exit(1)
-    n_range = [2**k for k in range(20)]
-    data = numpy.empty((len(n_range), len(kernels)))
-    for k, n in enumerate(n_range):
-        p = numpy.random.rand(n)
-        ref = math.fsum(p)
-        data[k] = [abs(kernel(p) - ref) / abs(ref) for kernel in kernels]
-
-    for label, d in zip(labels, data.T):
-        plt.loglog(n_range, d, label=label)
-
-    plt.legend()
-    plt.grid()
-    plt.ylim(5.0e-18, 1.0)
-    plt.xlabel('len(p)')
-    plt.ylabel('error')
-
-    plt.show()
-    # plt.savefig('accuracy-sums.png', transparent=True)
-    return
-
-
 def test_accuracy_comparison_illcond():
     kernels = [
         sum,
         numpy.sum,
         accupy.kahan_sum,
-        accupy.neumaier_sum,
         lambda p: accupy.ksum(p, K=2),
         lambda p: accupy.ksum(p, K=3),
         accupy.fsum,
@@ -72,10 +32,9 @@ def test_accuracy_comparison_illcond():
         'sum',
         'numpy.sum',
         'kahan_sum',
-        'neumaier_sum',
-        'ksum[2]',
-        'ksum[3]',
-        'fsum',
+        'accupy.ksum[2]',
+        'accupy.ksum[3]',
+        'accupy.fsum',
         ]
     x = [10**k for k in range(0, 37, 3)]
     data = numpy.empty((len(x), len(kernels)))
@@ -96,6 +55,33 @@ def test_accuracy_comparison_illcond():
 
     plt.show()
     # plt.savefig('accuracy-sums.png', transparent=True)
+    return
+
+
+def test_speed_comparison1():
+    perfplot.save(
+        'speed-comparison1.png',
+        setup=lambda n: numpy.random.rand(n),
+        kernels=[
+            lambda p: numpy.sum(p, axis=0),
+            accupy.kahan_sum,
+            lambda p: accupy.ksum(p, K=2),
+            lambda p: accupy.ksum(p, K=3),
+            accupy.fsum,
+            ],
+        labels=[
+            'numpy.sum',
+            'kahan_sum',
+            'accupy.ksum[2]',
+            'accupy.ksum[3]',
+            'accupy.fsum',
+            ],
+        n_range=[2**k for k in range(18)],
+        title='Sum(random(n))',
+        xlabel='n',
+        logx=True,
+        logy=True,
+        )
     return
 
 
@@ -140,4 +126,5 @@ def test_sum():
 
 
 if __name__ == '__main__':
-    test_accuracy_comparison_illcond()
+    # test_accuracy_comparison_illcond()
+    test_speed_comparison1()
