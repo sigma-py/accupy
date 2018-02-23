@@ -76,8 +76,8 @@ the fastest (`numpy.sum`), and the most accurate the slowest (`accupy.fsum`).
 ### References
 
 1. [Takeshi Ogita, Siegfried M. Rump, and Shin'ichi Oishi, _Accurate Sum and Dot
-   Product_, SIAM J. Sci. Comput., 26(6), 1955–1988. (34
-   pages).](https://doi.org/10.1137/030601818)
+   Product_, SIAM J. Sci. Comput., 26(6), 1955–1988 (34
+   pages), July 2006.](https://doi.org/10.1137/030601818)
 
 ### Installation
 
