@@ -33,10 +33,10 @@ accupy has the following methods for summation:
 
   * `accupy.fsum(p)`: A vectorization wrapper around
     [math.fsum](https://docs.python.org/3/library/math.html#math.fsum) (which
-    uses the [Shewchuck
-    algorithm](https://code.activestate.com/recipes/393090/))
+    uses Shewchuck's algorithm [[1]](#references) (see also
+    [here](https://code.activestate.com/recipes/393090/))).
 
-  * `accupy.ksum(p, K=2)`: Summation in K-fold precision (from [[1]](#references))
+  * `accupy.ksum(p, K=2)`: Summation in K-fold precision (from [[2]](#references))
 
 All summation methods sum the first dimension of a multidimensional NumPy array.
 
@@ -75,9 +75,13 @@ the fastest (`numpy.sum`), and the most accurate the slowest (`accupy.fsum`).
 
 ### References
 
-1. [Takeshi Ogita, Siegfried M. Rump, and Shin'ichi Oishi, _Accurate Sum and Dot
-   Product_, SIAM J. Sci. Comput., 26(6), 1955–1988 (34
-   pages), July 2006.](https://doi.org/10.1137/030601818)
+1. [Richard Shewchuk, _Adaptive Precision Floating-Point Arithmetic and Fast
+   Robust Geometric Predicates_, J. Discrete Comput. Geom. (1997), 18(305),
+   305–363.](https://doi.org/10.1007/PL00009321).
+
+2. [Takeshi Ogita, Siegfried M. Rump, and Shin'ichi Oishi, _Accurate Sum and Dot
+   Product_, SIAM J. Sci. Comput. (2006), 26(6), 1955–1988 (34
+   pages).](https://doi.org/10.1137/030601818)
 
 ### Installation
 
