@@ -42,7 +42,7 @@ Let's compare the methods.
 
 #### Accuracy comparison
 
-<img src="https://nschloe.github.io/accupy/accuracy-sums.png" width="40%">
+![](https://nschloe.github.io/accupy/accuracy-sums.png)
 
 As expected, the naive
 [sum](https://docs.python.org/3/library/functions.html#sum) performs very badly
