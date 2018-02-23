@@ -2,6 +2,7 @@
 
 disable=
     bad-continuation,
+    c-extension-no-member,
     duplicate-code,
     fixme,
     invalid-name,

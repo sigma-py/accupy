@@ -2,6 +2,10 @@
 #
 from __future__ import print_function
 
+# https://github.com/pybind/pybind11/issues/1004
+# pylint: disable=wildcard-import
+from _accupy import *
+
 from .__about__ import (
     __author__,
     __email__,
@@ -12,9 +16,6 @@ from .__about__ import (
     __maintainer__,
     __status__,
     )
-
-# https://github.com/pybind/pybind11/issues/1004
-from _accupy import *
 
 from .dot import *
 from .ill_cond import *

@@ -14,14 +14,14 @@ numpy.random.seed(0)
 def test_prod():
     a = 2.0
     b = 1.0e10
-    x, y = accupy.prod2(a, b)
+    x, y = accupy.prod2_split(a, b)
     assert x == 2.0e10
     assert y == 0.0
     return
 
 
 def test_dot1():
-    x, y, d, C = accupy.generate_ill_conditioned_dot_product(10, 1.0e30)
+    x, y, d, _ = accupy.generate_ill_conditioned_dot_product(10, 1.0e30)
     print(d)
     print()
     print(numpy.dot(x, y))

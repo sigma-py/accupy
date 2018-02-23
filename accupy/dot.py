@@ -19,7 +19,7 @@ def split(a):
     return x, y
 
 
-def prod2(a, b):
+def prod2_split(a, b):
     '''Error-free transformation of the product of two floating-point numbers.
 
     Algorithm 3.3 in <https://doi.org/10.1137/030601818>.
