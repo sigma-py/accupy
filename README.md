@@ -31,14 +31,16 @@ accupy has the following methods for summation:
   * `accupy.kahan_sum(p)`: [Kahan
     summation](https://en.wikipedia.org/wiki/Kahan_summation_algorithm)
 
-  * `accupy.fsum(p)`: A thin wrapper around
+  * `accupy.fsum(p)`: A vectorization wrapper around
     [math.fsum](https://docs.python.org/3/library/math.html#math.fsum) (which
     uses the [Shewchuck
     algorithm](https://code.activestate.com/recipes/393090/))
 
   * `accupy.ksum(p, K=2)`: Summation in K-fold precision (from [[1]](#references))
 
-Let's compare the methods.
+All summation methods sum the first dimension of a multidimensional NumPy array.
+
+Let's compare them.
 
 #### Accuracy comparison
 
@@ -61,6 +63,14 @@ floating point precision.
 
 
 #### Speed comparison
+
+![](https://nschloe.github.io/accupy/speed-comparison1.png)
+
+![](https://nschloe.github.io/accupy/speed-comparison2.png)
+
+We compare more and more sums of fixed size (above) and larger and larger sums,
+but a fixed number of them (below). In both cases, the least accurate method is
+the fastest (`numpy.sum`), and the most accurate the slowest (`accupy.fsum`).
 
 
 ### References
