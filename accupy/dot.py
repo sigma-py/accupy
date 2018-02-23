@@ -54,7 +54,7 @@ def dot2(x, y, prod2=prod2_fma):
     return p + s
 
 
-def dotK(x, y, K=2, prod2=prod2_fma):
+def kdot(x, y, K=2, prod2=prod2_fma):
     '''Algorithm 5.10. Dot product algorithm in K-fold working precision,
     K >= 3.
     '''
