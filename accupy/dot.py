@@ -4,7 +4,7 @@ import pyfma
 
 import _accupy
 
-from .sums import ksum, knuth_sum
+from .sums import ksum, knuth_sum, fsum
 
 
 def split(a):
@@ -55,9 +55,17 @@ def dot2(x, y, prod2=prod2_fma):
     return p + s
 
 
-def kdot(x, y, K=2, prod2=prod2_fma):
+def kdot(x, y, K=2):
     '''Algorithm 5.10. Dot product algorithm in K-fold working precision,
     K >= 3.
     '''
     r = _accupy.kdot_helper(x, y)
     return ksum(r, K-1)
+
+
+def fdot(x, y):
+    '''Algorithm 5.10. Dot product algorithm in K-fold working precision,
+    K >= 3.
+    '''
+    r = _accupy.kdot_helper(x, y)
+    return fsum(r)

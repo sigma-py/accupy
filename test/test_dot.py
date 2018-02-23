@@ -2,8 +2,6 @@
 #
 from __future__ import division
 
-import math
-
 import matplotlib.pyplot as plt
 import numpy
 import pytest
@@ -22,22 +20,6 @@ def test_prod():
     return
 
 
-def test_dot1():
-    x, y, d, _ = accupy.generate_ill_conditioned_dot_product(10, 1.0e30)
-    print(d)
-    print()
-    print(numpy.dot(x, y))
-    print()
-    # print(accupy.dot1(x, y))
-    print(accupy.dotK(x, y, K=1))
-    print(accupy.dotK(x, y, K=2))
-    print(accupy.dotK(x, y, K=3))
-
-    a, b = accupy.prod2_fma(x, y)
-    print(math.fsum(numpy.concatenate([a, b])))
-    return
-
-
 @pytest.mark.parametrize('target_cond', [
     [10**k for k in range(5)]
     ])
@@ -46,11 +28,13 @@ def test_accuracy_comparison_illcond(target_cond):
         numpy.dot,
         lambda x, y: accupy.kdot(x, y, K=2),
         lambda x, y: accupy.kdot(x, y, K=3),
+        accupy.fdot,
         ]
     labels = [
         'numpy.dot',
         'accupy.kdot[2]',
         'accupy.kdot[3]',
+        'accupy.fdot',
         ]
     data = numpy.empty((len(target_cond), len(kernels)))
     condition_numbers = numpy.empty(len(target_cond))
@@ -68,9 +52,10 @@ def test_accuracy_comparison_illcond(target_cond):
     plt.ylim(5.0e-18, 1.0)
     plt.xlabel('condition number')
     plt.ylabel('relative error')
+    plt.gca().set_aspect(1.3)
 
-    plt.show()
-    # plt.savefig('accuracy-sums.png', transparent=True)
+    # plt.show()
+    plt.savefig('accuracy-dot.png', transparent=True)
     return
 
 
