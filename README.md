@@ -21,7 +21,7 @@ The actual result is `1.0`, but in double precision, this will result in `0.0`.
 While in this example the failure is quite obvious, it can get a lot more
 tricky than that. accupy provides
 ```python
-p, exact = accupy.generate_ill_conditioned_sum(100, 1.0e20)
+p, exact, cond = accupy.generate_ill_conditioned_sum(100, 1.0e20)
 ```
 which given a length and a target condition number will produce an array if
 floating point numbers that's hard to sum up.
@@ -71,6 +71,35 @@ floating point precision.
 We compare more and more sums of fixed size (above) and larger and larger sums,
 but a fixed number of them (below). In both cases, the least accurate method is
 the fastest (`numpy.sum`), and the most accurate the slowest (`accupy.fsum`).
+
+### Dot products
+
+accupy has the following methods for dot products:
+
+  * `accupy.fdot(p)`: A transformation of the dot product of length _n_ into a
+    sum of length _2n_, computed with
+    [math.fsum](https://docs.python.org/3/library/math.html#math.fsum)
+
+  * `accupy.kdot(p, K=2)`: Dot product in K-fold precision (from
+    [[2]](#references))
+
+Let's compare them.
+
+#### Accuracy comparison
+
+accupy can construct ill-conditioned dot products with
+```python
+x, y, exact, cond = accupy.generate_ill_conditioned_dot_product(100, 1.0e20)
+```
+With this, the accuracy of the different methods is compared.
+
+![](https://nschloe.github.io/accupy/accuracy-dot.png)
+
+As for sums, `numpy.dot` is the least accurate, followed by instanced of `kdot`.
+`fdot` is provably accurate up into the last digit
+
+#### Speed comparison
+
 
 
 ### References
