@@ -36,25 +36,11 @@ def decker_sum(a, b):
     fact less favorable in terms of actual speed.
     '''
     x = a + b
-    if abs(a) > abs(b):
-        y = b - (x-a)
-    else:
-        y = a - (x-b)
+    y = b - (x-a) if abs(a) > abs(b) else a - (x-b)
     return x, y
 
 
-# def distill_python(p):
-#     '''Algorithm 4.3. Error-free vector transformation for summation.
-#
-#     The vector p is transformed without changing the sum, and p_n is replaced
-#     by float(sum(p)). Kahan [21] calls this a 'distillation algorithm.'
-#     '''
-#     for i in range(1, len(p)):
-#         p[i], p[i-1] = knuth_sum(p[i], p[i-1])
-#     return p
-
-
-def distill(p):
+def distill(p, K):
     '''Algorithm 4.3. Error-free vector transformation for summation.
 
     The vector p is transformed without changing the sum, and p_n is replaced
@@ -63,7 +49,8 @@ def distill(p):
     # Append newaxis to account for len(p.shape)==1
     p = p[..., numpy.newaxis]
     q = p.reshape(p.shape[0], numpy.prod(p.shape[1:]))
-    _accupy.distill(q)
+    for _ in range(K):
+        _accupy.distill(q)
     return q.reshape(p.shape[:-1])
 
 
@@ -80,8 +67,7 @@ def ksum(p, K=2):
     '''
     # Don't override the input data.
     q = p.copy()
-    for _ in range(1, K):
-        distill(q)
+    distill(q, K-1)
     return numpy.sum(q[:-1], axis=0) + q[-1]
 
 

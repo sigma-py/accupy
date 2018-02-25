@@ -52,11 +52,7 @@ neumaier(py::array_t<double, py::array::c_style | py::array::forcecast> p) {
   double c = 0.0;
   for (ssize_t i = 1; i < r.shape(0); i++) {
     double t = s + r(i);
-    if (std::fabs(s) > std::fabs(r(i))) {
-      c += (s - t) + r(i);
-    } else {
-      c += (r(i) - t) + s;
-    }
+    c += (std::fabs(s) > std::fabs(r(i))) ? (s - t) + r(i) : (r(i) - t) + s;
     s = t;
   }
   return s + c;
