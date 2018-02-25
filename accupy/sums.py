@@ -82,7 +82,7 @@ def ksum(p, K=2):
     q = p.copy()
     for _ in range(1, K):
         distill(q)
-    return sum(q[:-1]) + q[-1]
+    return numpy.sum(q[:-1], axis=0) + q[-1]
 
 
 _math_fsum_vec = numpy.vectorize(math.fsum, signature='(m)->()')

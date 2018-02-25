@@ -24,6 +24,7 @@ def test_ill_conditioned_sum(cond):
     ])
 def test_accuracy_comparison_illcond(x):
     kernels = [
+        sum,
         numpy.sum,
         accupy.kahan_sum,
         lambda p: accupy.ksum(p, K=2),
@@ -31,13 +32,14 @@ def test_accuracy_comparison_illcond(x):
         accupy.fsum,
         ]
     labels = [
+        'sum',
         'numpy.sum',
         'accupy.kahan_sum',
         'accupy.ksum[2]',
         'accupy.ksum[3]',
         'accupy.fsum',
         ]
-    colors = plt.rcParams['axes.prop_cycle'].by_key()['color'][:len(labels)]
+    colors = plt.rcParams['axes.prop_cycle'].by_key()['color'][:6]
 
     data = numpy.empty((len(x), len(kernels)))
     condition_numbers = numpy.empty(len(x))
@@ -49,7 +51,7 @@ def test_accuracy_comparison_illcond(x):
     for label, color, d in zip(labels, colors, data.T):
         plt.loglog(condition_numbers, d, label=label, color=color)
 
-    plt.legend()
+    lgd = plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.0)
     plt.grid()
     plt.ylim(5.0e-18, 1.0)
     plt.xlabel('condition number')
@@ -57,7 +59,13 @@ def test_accuracy_comparison_illcond(x):
     plt.gca().set_aspect(1.3)
 
     # plt.show()
-    plt.savefig('accuracy-sums.png', transparent=True)
+    # <https://stackoverflow.com/a/10154763/353337>
+    plt.savefig(
+        'accuracy-sums.png',
+        transparent=True,
+        bbox_extra_artists=(lgd,),
+        bbox_inches='tight'
+        )
     return
 
 
@@ -68,6 +76,7 @@ def test_speed_comparison1(n_range):
     perfplot.plot(
         setup=lambda n: numpy.random.rand(n, 100),
         kernels=[
+            sum,
             lambda p: numpy.sum(p, axis=0),
             accupy.kahan_sum,
             lambda p: accupy.ksum(p, K=2),
@@ -75,13 +84,14 @@ def test_speed_comparison1(n_range):
             accupy.fsum,
             ],
         labels=[
+            'sum',
             'numpy.sum',
             'accupy.kahan_sum',
             'accupy.ksum[2]',
             'accupy.ksum[3]',
             'accupy.fsum',
             ],
-        colors=plt.rcParams['axes.prop_cycle'].by_key()['color'][:5],
+        colors=plt.rcParams['axes.prop_cycle'].by_key()['color'][:6],
         n_range=n_range,
         title='Sum(random(n, 100))',
         xlabel='n',
@@ -90,7 +100,13 @@ def test_speed_comparison1(n_range):
         automatic_order=False
         )
     plt.gca().set_aspect(0.5)
-    plt.savefig('speed-comparison1.png', transparent=True)
+    lgd = plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.0)
+    plt.savefig(
+        'speed-comparison1.png',
+        transparent=True,
+        bbox_extra_artists=(lgd,),
+        bbox_inches='tight',
+        )
     return
 
 
@@ -101,6 +117,7 @@ def test_speed_comparison2(n_range):
     perfplot.plot(
         setup=lambda n: numpy.random.rand(100, n),
         kernels=[
+            sum,
             lambda p: numpy.sum(p, axis=0),
             accupy.kahan_sum,
             lambda p: accupy.ksum(p, K=2),
@@ -108,13 +125,14 @@ def test_speed_comparison2(n_range):
             accupy.fsum,
             ],
         labels=[
+            'sum',
             'numpy.sum',
             'accupy.kahan_sum',
             'accupy.ksum[2]',
             'accupy.ksum[3]',
             'accupy.fsum',
             ],
-        colors=plt.rcParams['axes.prop_cycle'].by_key()['color'][:5],
+        colors=plt.rcParams['axes.prop_cycle'].by_key()['color'][:6],
         n_range=n_range,
         title='Sum(random(100, n))',
         xlabel='n',
@@ -123,7 +141,13 @@ def test_speed_comparison2(n_range):
         automatic_order=False
         )
     plt.gca().set_aspect(0.5)
-    plt.savefig('speed-comparison2.png', transparent=True)
+    lgd = plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.0)
+    plt.savefig(
+        'speed-comparison2.png',
+        transparent=True,
+        bbox_extra_artists=(lgd,),
+        bbox_inches='tight',
+        )
     return
 
 
