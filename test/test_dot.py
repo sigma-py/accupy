@@ -5,6 +5,7 @@ from __future__ import division
 import matplotlib.pyplot as plt
 import numpy
 import pytest
+import perfplot
 
 import accupy
 
@@ -59,5 +60,34 @@ def test_accuracy_comparison_illcond(target_cond):
     return
 
 
+@pytest.mark.parametrize('n_range', [
+    [2**k for k in range(5)]
+    ])
+def test_speed_comparison1(n_range):
+    perfplot.save(
+        'speed-comparison1.png',
+        setup=lambda n: numpy.random.rand(2, n, 100),
+        kernels=[
+            lambda xy: numpy.dot(*xy),
+            lambda xy: accupy.kdot(*xy, K=2),
+            lambda xy: accupy.kdot(*xy, K=3),
+            lambda xy: accupy.fdot(*xy),
+            ],
+        labels=[
+            'numpy.dot',
+            'accupy.kdot[2]',
+            'accupy.kdot[3]',
+            'accupy.fdot',
+            ],
+        n_range=n_range,
+        title='dot(random(n, 100), random(n, 100))',
+        xlabel='n',
+        logx=True,
+        logy=True,
+        )
+    return
+
+
 if __name__ == '__main__':
-    test_accuracy_comparison_illcond([10**k for k in range(0, 37, 3)])
+    # test_accuracy_comparison_illcond([10**k for k in range(0, 37, 3)])
+    test_speed_comparison1(n_range=[2**k for k in range(15)])

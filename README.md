@@ -106,11 +106,11 @@ As for sums, `numpy.dot` is the least accurate, followed by instanced of `kdot`.
 
 1. [Richard Shewchuk, _Adaptive Precision Floating-Point Arithmetic and Fast
    Robust Geometric Predicates_, J. Discrete Comput. Geom. (1997), 18(305),
-   305–363.](https://doi.org/10.1007/PL00009321).
+   305–363](https://doi.org/10.1007/PL00009321)
 
 2. [Takeshi Ogita, Siegfried M. Rump, and Shin'ichi Oishi, _Accurate Sum and Dot
    Product_, SIAM J. Sci. Comput. (2006), 26(6), 1955–1988 (34
-   pages).](https://doi.org/10.1137/030601818)
+   pages)](https://doi.org/10.1137/030601818)
 
 ### Installation
 
