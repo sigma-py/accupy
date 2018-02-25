@@ -32,7 +32,7 @@ def test_accuracy_comparison_illcond(x):
         ]
     labels = [
         'numpy.sum',
-        'kahan_sum',
+        'accupy.kahan_sum',
         'accupy.ksum[2]',
         'accupy.ksum[3]',
         'accupy.fsum',
@@ -76,7 +76,7 @@ def test_speed_comparison1(n_range):
             ],
         labels=[
             'numpy.sum',
-            'kahan_sum',
+            'accupy.kahan_sum',
             'accupy.ksum[2]',
             'accupy.ksum[3]',
             'accupy.fsum',
@@ -109,7 +109,7 @@ def test_speed_comparison2(n_range):
             ],
         labels=[
             'numpy.sum',
-            'kahan_sum',
+            'accupy.kahan_sum',
             'accupy.ksum[2]',
             'accupy.ksum[3]',
             'accupy.fsum',
