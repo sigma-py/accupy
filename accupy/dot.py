@@ -59,7 +59,11 @@ def kdot(x, y, K=2):
     '''Algorithm 5.10. Dot product algorithm in K-fold working precision,
     K >= 3.
     '''
-    r = _accupy.kdot_helper(x, y)
+    xx = x.reshape(-1, x.shape[-1])
+    yy = x.reshape(y.shape[0], -1)
+    r = _accupy.kdot_helper(xx, yy)
+
+    exit(1)
     return ksum(r, K-1)
 
 

@@ -1,7 +1,24 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/numpy.h>
+#include <pybind11/eigen.h>
 
 namespace py = pybind11;
+
+
+// void
+// distill(py::array_t<double, py::array::c_style | py::array::forcecast> p) {
+//   auto r = p.mutable_unchecked<2>();
+//   for (ssize_t i = 1; i < r.shape(0); i++) {
+//     for (ssize_t j = 0; j < r.shape(1); j++) {
+//       double x = r(i, j) + r(i-1, j);
+//       double z = x - r(i, j);
+//       double y = (r(i, j) - (x-z)) + (r(i-1, j) - z);
+//       r(i, j) = x;
+//       r(i-1, j) = y;
+//     }
+//   }
+// }
+
 
 // Algorithm 4.3. Error-free vector transformation for summation.
 //
@@ -10,17 +27,26 @@ namespace py = pybind11;
 //
 // Keep an eye on <https://github.com/pybind/pybind11/issues/1294> for a
 // potentially better treatment of the dimensionality.
+// Using Eigen is a bit faster than two for loops in i and j.
+// See <https://stackoverflow.com/q/48991349/353337> for potential further
+// speed ups.
 void
 distill(py::array_t<double, py::array::c_style | py::array::forcecast> p) {
-  auto r = p.mutable_unchecked<2>();
-  for (ssize_t i = 1; i < r.shape(0); i++) {
-    for (ssize_t j = 0; j < r.shape(1); j++) {
-      double x = r(i, j) + r(i-1, j);
-      double z = x - r(i, j);
-      double y = (r(i, j) - (x-z)) + (r(i-1, j) - z);
-      r(i, j) = x;
-      r(i-1, j) = y;
-    }
+  auto buf_p = p.request();
+  if (buf_p.ndim != 2)
+    throw std::runtime_error("Number of dimensions must be 2");
+
+  const ssize_t n = buf_p.shape[1];
+  double *data = (double *) buf_p.ptr;
+
+  for (ssize_t i = 1; i < buf_p.shape[0]; i++) {
+    auto r_i1 = Eigen::Map<Eigen::VectorXd>(&data[(i-1)*n], n);
+    auto r_i = Eigen::Map<Eigen::VectorXd>(&data[i*n], n);
+    auto x = r_i + r_i1;
+    auto z = x - r_i;
+    auto y = (r_i - (x-z)) + (r_i1 - z);
+    r_i = x;
+    r_i1 = y;
   }
 }
 

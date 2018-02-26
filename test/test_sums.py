@@ -101,6 +101,7 @@ def test_speed_comparison1(n_range):
         )
     plt.gca().set_aspect(0.5)
     lgd = plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.0)
+    # plt.show()
     plt.savefig(
         'speed-comparison1.png',
         transparent=True,
@@ -142,6 +143,7 @@ def test_speed_comparison2(n_range):
         )
     plt.gca().set_aspect(0.5)
     lgd = plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.0)
+    # plt.show()
     plt.savefig(
         'speed-comparison2.png',
         transparent=True,
@@ -192,6 +194,6 @@ def test_sum():
 
 
 if __name__ == '__main__':
-    test_accuracy_comparison_illcond([10**k for k in range(0, 37, 3)])
+    # test_accuracy_comparison_illcond([10**k for k in range(0, 37, 3)])
     # test_speed_comparison1(n_range=[2**k for k in range(15)])
-    # test_speed_comparison2(n_range=[2**k for k in range(15)])
+    test_speed_comparison2(n_range=[2**k for k in range(15)])

@@ -66,7 +66,7 @@ def test_accuracy_comparison_illcond(target_cond):
 def test_speed_comparison1(n_range):
     perfplot.save(
         'speed-comparison1.png',
-        setup=lambda n: numpy.random.rand(2, n, 100),
+        setup=lambda n: (numpy.random.rand(n, 100), numpy.random.rand(100, n)),
         kernels=[
             lambda xy: numpy.dot(*xy),
             lambda xy: accupy.kdot(*xy, K=2),
@@ -80,7 +80,7 @@ def test_speed_comparison1(n_range):
             'accupy.fdot',
             ],
         n_range=n_range,
-        title='dot(random(n, 100), random(n, 100))',
+        title='dot(random(n, 100), random(100, n))',
         xlabel='n',
         logx=True,
         logy=True,
@@ -90,4 +90,4 @@ def test_speed_comparison1(n_range):
 
 if __name__ == '__main__':
     # test_accuracy_comparison_illcond([10**k for k in range(0, 37, 3)])
-    test_speed_comparison1(n_range=[2**k for k in range(15)])
+    test_speed_comparison1(n_range=[2**k for k in range(10)])

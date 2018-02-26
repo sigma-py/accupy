@@ -45,6 +45,7 @@ ext_modules = [Extension(
     ],
     language='c++',
     include_dirs=[
+        '/usr/include/eigen3/',
         get_pybind_include(),
         get_pybind_include(user=True)
         ],
