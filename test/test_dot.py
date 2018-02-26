@@ -12,19 +12,31 @@ import accupy
 numpy.random.seed(0)
 
 
-def test_prod():
-    a = 2.0
-    b = 1.0e10
-    x, y = accupy.prod2_split(a, b)
-    assert x == 2.0e10
-    assert y == 0.0
+@pytest.mark.parametrize('cond', [1.0, 1.0e15])
+def test_kdot2(cond):
+    x, y, ref, _ = accupy.generate_ill_conditioned_dot_product(100, cond)
+    assert abs(accupy.kdot(x, y, K=2) - ref) < 1.0e-15 * abs(ref)
     return
 
 
-@pytest.mark.parametrize('target_cond', [
-    [10**k for k in range(5)]
-    ])
-def test_accuracy_comparison_illcond(target_cond):
+@pytest.mark.parametrize('cond', [1.0, 1.0e15, 1.0e30])
+def test_kdot3(cond):
+    x, y, ref, _ = accupy.generate_ill_conditioned_dot_product(100, cond)
+    assert abs(accupy.kdot(x, y, K=3) - ref) < 1.0e-15 * abs(ref)
+    return
+
+
+@pytest.mark.parametrize('cond', [1.0, 1.0e15, 1.0e30, 1.0e38])
+def test_fdot(cond):
+    x, y, ref, _ = accupy.generate_ill_conditioned_dot_product(100, cond)
+    assert abs(accupy.fdot(x, y) - ref) < 1.0e-15 * abs(ref)
+    return
+
+
+def test_accuracy_comparison_illcond(target_cond=None):
+    if target_cond is None:
+        target_cond = [10**k for k in range(2)]
+
     kernels = [
         numpy.dot,
         lambda x, y: accupy.kdot(x, y, K=2),
@@ -48,7 +60,7 @@ def test_accuracy_comparison_illcond(target_cond):
     for label, d in zip(labels, data.T):
         plt.loglog(condition_numbers, d, label=label)
 
-    plt.legend()
+    lgd = plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.0)
     plt.grid()
     plt.ylim(5.0e-18, 1.0)
     plt.xlabel('condition number')
@@ -56,14 +68,20 @@ def test_accuracy_comparison_illcond(target_cond):
     plt.gca().set_aspect(1.3)
 
     # plt.show()
-    plt.savefig('accuracy-dot.png', transparent=True)
+    # <https://stackoverflow.com/a/10154763/353337>
+    plt.savefig(
+        'accuracy-dot.png',
+        transparent=True,
+        bbox_extra_artists=(lgd,),
+        bbox_inches='tight'
+        )
     return
 
 
-@pytest.mark.parametrize('n_range', [
-    [2**k for k in range(5)]
-    ])
-def test_speed_comparison1(n_range):
+def test_speed_comparison1(n_range=None):
+    if n_range is None:
+        n_range = [2**k for k in range(2)]
+
     perfplot.save(
         'speed-comparison1.png',
         setup=lambda n: (numpy.random.rand(n, 100), numpy.random.rand(100, n)),
