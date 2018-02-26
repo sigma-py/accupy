@@ -33,9 +33,9 @@ def test_fsum(cond):
     return
 
 
-def test_accuracy_comparison_illcond(x=None):
-    if x is None:
-        x = [10**k for k in range(1)]
+def test_accuracy_comparison_illcond(target_conds=None):
+    if target_conds is None:
+        target_conds = [10**k for k in range(1, 2)]
 
     kernels = [
         sum,
@@ -55,9 +55,9 @@ def test_accuracy_comparison_illcond(x=None):
         ]
     colors = plt.rcParams['axes.prop_cycle'].by_key()['color'][:6]
 
-    data = numpy.empty((len(x), len(kernels)))
-    condition_numbers = numpy.empty(len(x))
-    for k, target_cond in enumerate(x):
+    data = numpy.empty((len(target_conds), len(kernels)))
+    condition_numbers = numpy.empty(len(target_conds))
+    for k, target_cond in enumerate(target_conds):
         p, ref, C = accupy.generate_ill_conditioned_sum(1000, target_cond)
         condition_numbers[k] = C
         data[k] = [abs(kernel(p) - ref) / abs(ref) for kernel in kernels]
@@ -85,7 +85,7 @@ def test_accuracy_comparison_illcond(x=None):
 
 def test_speed_comparison1(n_range=None):
     if n_range is None:
-        n_range = [2**k for k in range(1)]
+        n_range = [2**k for k in range(2)]
 
     perfplot.plot(
         setup=lambda n: numpy.random.rand(n, 100),
@@ -127,7 +127,7 @@ def test_speed_comparison1(n_range=None):
 
 def test_speed_comparison2(n_range=None):
     if n_range is None:
-        n_range = [2**k for k in range(1)]
+        n_range = [2**k for k in range(2)]
 
     perfplot.plot(
         setup=lambda n: numpy.random.rand(100, n),
