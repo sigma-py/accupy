@@ -20,29 +20,20 @@ namespace py = pybind11;
 // }
 
 
+using RowMatrixXd = Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>;
+
 // Algorithm 4.3. Error-free vector transformation for summation.
 //
 // The vector p is transformed without changing the sum, and p_n is replaced
 // by float(sum(p)). Kahan [21] calls this a "distillation algorithm".
 void
-distill(py::array_t<double, py::array::c_style | py::array::forcecast> p) {
-  auto buf_p = p.request();
-  if (buf_p.ndim != 2)
-    throw std::runtime_error("Number of dimensions must be 2");
-
-  const ssize_t m = buf_p.shape[0];
-  const ssize_t n = buf_p.shape[1];
-
-  double *data = (double *) buf_p.ptr;
-
-  auto r = Eigen::Map<Eigen::MatrixXd>(buf_p_ptr, n, m);
-
-  for (ssize_t i = 1; i < buf_p.shape[0]; i++) {
-    auto x = r.col(i) + r.col(i-1);
-    auto z = x - r.col(i);
-    auto y = (r.col(i) - (x-z)) + (r.col(i-1) - z);
-    r.col(i) = x;
-    r.col(i-1) = y;
+distill(Eigen::Ref<RowMatrixXd> r) {
+  for (ssize_t i = 1; i < r.rows(); i++) {
+    auto x = r.row(i) + r.row(i-1);
+    auto z = x - r.row(i);
+    auto y = (r.row(i) - (x-z)) + (r.row(i-1) - z);
+    r.row(i) = x;
+    r.row(i-1) = y;
   }
 }
 
