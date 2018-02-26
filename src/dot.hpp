@@ -14,10 +14,10 @@ kdot_helper(
   auto buf1 = x.request();
   auto buf2 = y.request();
 
-  if (buf1.ndim != 2 || buf2.ndim != 2)
-    throw std::runtime_error("Number of dimensions must be 2");
+  if (buf1.ndim != 1 || buf2.ndim != 1)
+    throw std::runtime_error("Number of dimensions must be 1");
 
-  if (buf1.shape[1] != buf2.shape[0])
+  if (buf1.size != buf2.size)
     throw std::runtime_error("Input shapes must match");
 
   /* No pointer is passed, so NumPy will allocate the buffer */

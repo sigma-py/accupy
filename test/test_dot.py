@@ -89,5 +89,5 @@ def test_speed_comparison1(n_range):
 
 
 if __name__ == '__main__':
-    # test_accuracy_comparison_illcond([10**k for k in range(0, 37, 3)])
-    test_speed_comparison1(n_range=[2**k for k in range(10)])
+    test_accuracy_comparison_illcond([10**k for k in range(0, 37, 3)])
+    # test_speed_comparison1(n_range=[2**k for k in range(10)])

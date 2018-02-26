@@ -5,37 +5,37 @@
 namespace py = pybind11;
 
 
-// void
-// distill(py::array_t<double, py::array::c_style | py::array::forcecast> p) {
-//   auto r = p.mutable_unchecked<2>();
-//   for (ssize_t i = 1; i < r.shape(0); i++) {
-//     for (ssize_t j = 0; j < r.shape(1); j++) {
-//       double x = r(i, j) + r(i-1, j);
-//       double z = x - r(i, j);
-//       double y = (r(i, j) - (x-z)) + (r(i-1, j) - z);
-//       r(i, j) = x;
-//       r(i-1, j) = y;
-//     }
-//   }
-// }
-
-
-using RowMatrixXd = Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>;
-
-// Algorithm 4.3. Error-free vector transformation for summation.
-//
-// The vector p is transformed without changing the sum, and p_n is replaced
-// by float(sum(p)). Kahan [21] calls this a "distillation algorithm".
 void
-distill(Eigen::Ref<RowMatrixXd> r) {
-  for (ssize_t i = 1; i < r.rows(); i++) {
-    auto x = r.row(i) + r.row(i-1);
-    auto z = x - r.row(i);
-    auto y = (r.row(i) - (x-z)) + (r.row(i-1) - z);
-    r.row(i) = x;
-    r.row(i-1) = y;
+distill(py::array_t<double, py::array::c_style | py::array::forcecast> p) {
+  auto r = p.mutable_unchecked<2>();
+  for (ssize_t i = 1; i < r.shape(0); i++) {
+    for (ssize_t j = 0; j < r.shape(1); j++) {
+      double x = r(i, j) + r(i-1, j);
+      double z = x - r(i, j);
+      double y = (r(i, j) - (x-z)) + (r(i-1, j) - z);
+      r(i, j) = x;
+      r(i-1, j) = y;
+    }
   }
 }
+
+
+// using RowMatrixXd = Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>;
+//
+// // Algorithm 4.3. Error-free vector transformation for summation.
+// //
+// // The vector p is transformed without changing the sum, and p_n is replaced
+// // by float(sum(p)). Kahan [21] calls this a "distillation algorithm".
+// void
+// distill(Eigen::Ref<RowMatrixXd> r) {
+//   for (ssize_t i = 1; i < r.rows(); i++) {
+//     auto x = r.row(i) + r.row(i-1);
+//     auto z = x - r.row(i);
+//     auto y = (r.row(i) - (x-z)) + (r.row(i-1) - z);
+//     r.row(i) = x;
+//     r.row(i-1) = y;
+//   }
+// }
 
 py::array_t<double>
 kahan(py::array_t<double, py::array::c_style | py::array::forcecast> p) {

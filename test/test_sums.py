@@ -13,16 +13,30 @@ numpy.random.seed(0)
 
 
 @pytest.mark.parametrize('cond', [1.0, 1.0e10, 1.0e15])
-def test_ill_conditioned_sum(cond):
+def test_ksum2(cond):
     p, ref, _ = accupy.generate_ill_conditioned_sum(100, cond)
     assert abs(accupy.ksum(p, K=2) - ref) < 1.0e-15 * abs(ref)
     return
 
 
-@pytest.mark.parametrize('x', [
-    [10**k for k in range(5)]
-    ])
-def test_accuracy_comparison_illcond(x):
+@pytest.mark.parametrize('cond', [1.0, 1.0e10, 1.0e20])
+def test_ksum3(cond):
+    p, ref, _ = accupy.generate_ill_conditioned_sum(100, cond)
+    assert abs(accupy.ksum(p, K=3) - ref) < 1.0e-15 * abs(ref)
+    return
+
+
+@pytest.mark.parametrize('cond', [1.0, 1.0e10, 1.0e20, 1.0e30])
+def test_fsum(cond):
+    p, ref, _ = accupy.generate_ill_conditioned_sum(100, cond)
+    assert abs(accupy.fsum(p) - ref) < 1.0e-15 * abs(ref)
+    return
+
+
+def test_accuracy_comparison_illcond(x=None):
+    if x is None:
+        x = [10**k for k in range(5)]
+
     kernels = [
         sum,
         numpy.sum,
@@ -69,10 +83,10 @@ def test_accuracy_comparison_illcond(x):
     return
 
 
-@pytest.mark.parametrize('n_range', [
-    [2**k for k in range(5)]
-    ])
-def test_speed_comparison1(n_range):
+def test_speed_comparison1(n_range=None):
+    if n_range is None:
+        n_range = [2**k for k in range(1)]
+
     perfplot.plot(
         setup=lambda n: numpy.random.rand(n, 100),
         kernels=[
@@ -111,10 +125,10 @@ def test_speed_comparison1(n_range):
     return
 
 
-@pytest.mark.parametrize('n_range', [
-    [2**k for k in range(5)]
-    ])
-def test_speed_comparison2(n_range):
+def test_speed_comparison2(n_range=None):
+    if n_range is None:
+        n_range = [2**k for k in range(1)]
+
     perfplot.plot(
         setup=lambda n: numpy.random.rand(100, n),
         kernels=[
@@ -179,21 +193,7 @@ def test_decker_sum():
     return
 
 
-def test_sum():
-    # Test with geometric sum
-    n = 10000
-    # p = numpy.float16(1.0) / numpy.arange(1, n)
-    p = numpy.random.rand(n) / n
-    s = accupy.fsum(p)
-    print(s)
-    s2 = 0.0
-    for r in p:
-        s2 += r
-    print(s2)
-    return
-
-
 if __name__ == '__main__':
-    # test_accuracy_comparison_illcond([10**k for k in range(0, 37, 3)])
-    test_speed_comparison1(n_range=[2**k for k in range(15)])
+    test_accuracy_comparison_illcond([10**k for k in range(0, 37, 3)])
+    # test_speed_comparison1(n_range=[2**k for k in range(15)])
     # test_speed_comparison2(n_range=[2**k for k in range(15)])
