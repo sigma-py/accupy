@@ -29,9 +29,6 @@ kahan(py::array_t<double, py::array::c_style | py::array::forcecast> p) {
   // Kahan summation.
   // See <https://en.wikipedia.org/wiki/Kahan_summation_algorithm> for
   // details.
-
-  // auto r = p.unchecked<1>();
-
   auto buf_p = p.request();
   if (buf_p.ndim != 2)
     throw std::runtime_error("Number of dimensions must be two");
@@ -50,10 +47,8 @@ kahan(py::array_t<double, py::array::c_style | py::array::forcecast> p) {
   double *ptr_s = (double *) buf_s.ptr;
 
   // zero out c and s
-  for (ssize_t j = 0; j < n; j++)
-    ptr_c[j] = 0.0;
-  for (ssize_t j = 0; j < n; j++)
-    ptr_s[j] = 0.0;
+  std::fill(ptr_c, ptr_c+n, 0.0);
+  std::fill(ptr_s, ptr_s+n, 0.0);
 
   // Kahan
   for (ssize_t i = 0; i < m; i++) {
