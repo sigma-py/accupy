@@ -12,21 +12,21 @@ import accupy
 numpy.random.seed(0)
 
 
-@pytest.mark.parametrize('cond', [1.0, 1.0e10, 1.0e15])
+@pytest.mark.parametrize('cond', [1.0, 1.0e15])
 def test_ksum2(cond):
     p, ref, _ = accupy.generate_ill_conditioned_sum(100, cond)
     assert abs(accupy.ksum(p, K=2) - ref) < 1.0e-15 * abs(ref)
     return
 
 
-@pytest.mark.parametrize('cond', [1.0, 1.0e10, 1.0e20])
+@pytest.mark.parametrize('cond', [1.0, 1.0e15, 1.0e30])
 def test_ksum3(cond):
     p, ref, _ = accupy.generate_ill_conditioned_sum(100, cond)
     assert abs(accupy.ksum(p, K=3) - ref) < 1.0e-15 * abs(ref)
     return
 
 
-@pytest.mark.parametrize('cond', [1.0, 1.0e10, 1.0e20, 1.0e30])
+@pytest.mark.parametrize('cond', [1.0, 1.0e15, 1.0e30, 1.0e35])
 def test_fsum(cond):
     p, ref, _ = accupy.generate_ill_conditioned_sum(100, cond)
     assert abs(accupy.fsum(p) - ref) < 1.0e-15 * abs(ref)
