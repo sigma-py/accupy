@@ -11,12 +11,13 @@ kdot_helper(
   py::array_t<double, py::array::c_style | py::array::forcecast> y
   ) {
   // Algorithm 5.10. Dot product algorithm in K-fold working precision, K >= 3.
-  auto buf1 = x.request(), buf2 = y.request();
+  auto buf1 = x.request();
+  auto buf2 = y.request();
 
-  if (buf1.ndim != 1 || buf2.ndim != 1)
-    throw std::runtime_error("Number of dimensions must be one");
+  if (buf1.ndim != 2 || buf2.ndim != 2)
+    throw std::runtime_error("Number of dimensions must be 2");
 
-  if (buf1.size != buf2.size)
+  if (buf1.shape[1] != buf2.shape[0])
     throw std::runtime_error("Input shapes must match");
 
   /* No pointer is passed, so NumPy will allocate the buffer */

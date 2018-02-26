@@ -24,29 +24,25 @@ namespace py = pybind11;
 //
 // The vector p is transformed without changing the sum, and p_n is replaced
 // by float(sum(p)). Kahan [21] calls this a "distillation algorithm".
-//
-// Keep an eye on <https://github.com/pybind/pybind11/issues/1294> for a
-// potentially better treatment of the dimensionality.
-// Using Eigen is a bit faster than two for loops in i and j.
-// See <https://stackoverflow.com/q/48991349/353337> for potential further
-// speed ups.
 void
 distill(py::array_t<double, py::array::c_style | py::array::forcecast> p) {
   auto buf_p = p.request();
   if (buf_p.ndim != 2)
     throw std::runtime_error("Number of dimensions must be 2");
 
+  const ssize_t m = buf_p.shape[0];
   const ssize_t n = buf_p.shape[1];
+
   double *data = (double *) buf_p.ptr;
 
+  auto r = Eigen::Map<Eigen::MatrixXd>(buf_p_ptr, n, m);
+
   for (ssize_t i = 1; i < buf_p.shape[0]; i++) {
-    auto r_i1 = Eigen::Map<Eigen::VectorXd>(&data[(i-1)*n], n);
-    auto r_i = Eigen::Map<Eigen::VectorXd>(&data[i*n], n);
-    auto x = r_i + r_i1;
-    auto z = x - r_i;
-    auto y = (r_i - (x-z)) + (r_i1 - z);
-    r_i = x;
-    r_i1 = y;
+    auto x = r.col(i) + r.col(i-1);
+    auto z = x - r.col(i);
+    auto y = (r.col(i) - (x-z)) + (r.col(i-1) - z);
+    r.col(i) = x;
+    r.col(i-1) = y;
   }
 }
 
