@@ -5,20 +5,34 @@
 namespace py = pybind11;
 
 
+// void
+// distill(py::array_t<double, py::array::c_style | py::array::forcecast> p) {
+//   auto r = p.mutable_unchecked<2>();
+//   for (ssize_t i = 1; i < r.shape(0); i++) {
+//     for (ssize_t j = 0; j < r.shape(1); j++) {
+//       double x = r(i, j) + r(i-1, j);
+//       double z = x - r(i, j);
+//       double y = (r(i, j) - (x-z)) + (r(i-1, j) - z);
+//       r(i, j) = x;
+//       r(i-1, j) = y;
+//     }
+//   }
+// }
+
+using RowMatrixXd = Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>;
+
 void
-distill(py::array_t<double, py::array::c_style | py::array::forcecast> p) {
-  auto r = p.mutable_unchecked<2>();
-  for (ssize_t i = 1; i < r.shape(0); i++) {
-    for (ssize_t j = 0; j < r.shape(1); j++) {
-      double x = r(i, j) + r(i-1, j);
-      double z = x - r(i, j);
-      double y = (r(i, j) - (x-z)) + (r(i-1, j) - z);
-      r(i, j) = x;
+distill(Eigen::Ref<RowMatrixXd> r) {
+  for (int i = 1; i < r.rows(); i++) {
+    auto x = r.row(i) + r.row(i-1);
+    auto z = x - r.row(i);
+    for (int j = 0; j < r.cols(); j++) {
+      auto y = (r(i, j) - (x[j] - z(j))) + (r(i-1, j) - z(j));
+      r(i, j) = x(j);
       r(i-1, j) = y;
     }
   }
 }
-
 
 // using RowMatrixXd = Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>;
 //
