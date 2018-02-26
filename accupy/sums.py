@@ -46,12 +46,10 @@ def distill(p, K):
     The vector p is transformed without changing the sum, and p_n is replaced
     by float(sum(p)). Kahan [21] calls this a 'distillation algorithm.'
     '''
-    # Append newaxis to account for len(p.shape)==1
-    p = p[..., numpy.newaxis]
     q = p.reshape(p.shape[0], -1)
     for _ in range(K):
         _accupy.distill(q)
-    return q.reshape(p.shape[:-1])
+    return q.reshape(p.shape)
 
 
 def ksum(p, K=2):
@@ -84,8 +82,7 @@ def kahan_sum(p):
     '''
     q = p.reshape(p.shape[0], -1)
     s = _accupy.kahan(q)
-    out = s.reshape(p.shape[1:])
-    return out
+    return s.reshape(p.shape[1:])
 
 
 _neumaier_vec = numpy.vectorize(_accupy.neumaier, signature='(m)->()')
