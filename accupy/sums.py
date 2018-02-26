@@ -48,7 +48,7 @@ def distill(p, K):
     '''
     # Append newaxis to account for len(p.shape)==1
     p = p[..., numpy.newaxis]
-    q = p.reshape(p.shape[0], numpy.prod(p.shape[1:]))
+    q = p.reshape(p.shape[0], -1)
     for _ in range(K):
         _accupy.distill(q)
     return q.reshape(p.shape[:-1])
@@ -78,14 +78,14 @@ def fsum(p):
     return _math_fsum_vec(p.T).T
 
 
-_kahan_vec = numpy.vectorize(_accupy.kahan, signature='(m)->()')
-
-
 def kahan_sum(p):
     '''Kahan summation
     <https://en.wikipedia.org/wiki/Kahan_summation_algorithm>.
     '''
-    return _kahan_vec(p.T).T
+    q = p.reshape(p.shape[0], -1)
+    s = _accupy.kahan(q)
+    out = s.reshape(p.shape[1:])
+    return out
 
 
 _neumaier_vec = numpy.vectorize(_accupy.neumaier, signature='(m)->()')
