@@ -9,6 +9,5 @@ PYBIND11_MODULE(_accupy, m) {
   m.def("kahan", &kahan);
   m.def("neumaier", &neumaier);
   m.def("kdot_helper", &kdot_helper);
-  m.def("scale_by_2", &scale_by_2);
-  m.def("distill_eigen", &distill_eigen);
+  m.def("distill", &distill);
 }
