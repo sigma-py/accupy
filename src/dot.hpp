@@ -19,25 +19,30 @@ kdot_helper(Eigen::Ref<RowMatrixXd> x, Eigen::Ref<RowMatrixXd> y) {
   // Use Eigen::Tensor to avoid stack overflows with native C arrays.
   Eigen::Tensor<double, 4, Eigen::RowMajor> result(2, n, x.rows(), y.cols());
 
-  for (int i=0; i < x.rows(); i++) {
-    for (int j=0; j < y.cols(); j++) {
-      double p = x(i, 0) * y(0, j);
-      result(0, 0, i, j) = fma(x(i, 0), y(0, j), -p);
+  auto p = RowMatrixXd(x.rows(), y.cols());
+  p.setZero();
 
-      for (ssize_t k=1; k < n; k++) {
+  // Use ikj ordering for speed; see, e.g.,
+  // <https://software.intel.com/en-us/articles/putting-your-data-and-code-in-order-optimization-and-memory-part-1>
+  for (int i=0; i < x.rows(); i++) {
+    for (int k=0; k < n; k++) {
+      for (int j=0; j < y.cols(); j++) {
         // product with exact error
         double h = x(i, k) * y(k, j);
         result(0, k, i, j) = fma(x(i, k), y(k, j), -h);
-        // knuth sum
-        double z0 = p + h;
-        double z1 = z0 - p;
-        double z2 = (p - (z0-z1)) + (h-z1);
-        p = z0;
-        result(1, k-1, i, j) = z2;
+        // knuth sum p+h with exact error z2
+        double z0 = p(i, j) + h;
+        double z1 = z0 - p(i, j);
+        double z2 = (p(i, j) - (z0-z1)) + (h-z1);
+        p(i, j) = z0;
+        result(1, k, i, j) = z2;
       }
-      result(1, n-1, i, j) = p;
     }
   }
+
+  for (int i=0; i < x.rows(); i++)
+    for (int j=0; j < y.cols(); j++)
+      result(1, 0, i, j) = p(i, j);
 
   return py::array_t<double>(
       std::vector<ptrdiff_t>{2, n, x.rows(), y.cols()},
