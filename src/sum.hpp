@@ -76,20 +76,3 @@ kahan(py::array_t<double, py::array::c_style | py::array::forcecast> p) {
   }
   return s;
 }
-
-double
-neumaier(py::array_t<double, py::array::c_style | py::array::forcecast> p) {
-  // Neumaier summation
-  // <https://en.wikipedia.org/wiki/Kahan_summation_algorithm#Further_enhancements>.
-  auto r = p.unchecked<1>();
-
-  double s = r(0);
-  double c = 0.0;
-  for (ssize_t i = 1; i < r.shape(0); i++) {
-    double t = s + r(i);
-    c += (std::fabs(s) > std::fabs(r(i))) ? (s - t) + r(i) : (r(i) - t) + s;
-    s = t;
-  }
-  return s + c;
-}
-

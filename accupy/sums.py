@@ -83,13 +83,3 @@ def kahan_sum(p):
     q = p.reshape(p.shape[0], -1)
     s = _accupy.kahan(q)
     return s.reshape(p.shape[1:])
-
-
-_neumaier_vec = numpy.vectorize(_accupy.neumaier, signature='(m)->()')
-
-
-def neumaier_sum(p):
-    '''Neumaier summation
-    <https://en.wikipedia.org/wiki/Kahan_summation_algorithm#Further_enhancements>.
-    '''
-    return _neumaier_vec(p.T).T
