@@ -6,6 +6,7 @@ Accurate sums and (dot) products for Python.
 [![codecov](https://img.shields.io/codecov/c/github/nschloe/accupy.svg)](https://codecov.io/gh/nschloe/accupy)
 [![accurate](https://img.shields.io/badge/accurate-very-brightgreen.svg)](https://img.shields.io/badge/accurate-very-brightgreen.svg)
 [![PyPi Version](https://img.shields.io/pypi/v/accupy.svg)](https://pypi.python.org/pypi/accupy)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1185173.svg)](https://doi.org/10.5281/zenodo.1185173)
 [![GitHub stars](https://img.shields.io/github/stars/nschloe/accupy.svg?style=social&label=Stars)](https://github.com/nschloe/accupy)
 
 
