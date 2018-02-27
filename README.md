@@ -100,6 +100,12 @@ As for sums, `numpy.dot` is the least accurate, followed by instanced of `kdot`.
 
 #### Speed comparison
 
+![](https://nschloe.github.io/accupy/speed-comparison-dot1.png)
+![](https://nschloe.github.io/accupy/speed-comparison-dot2.png)
+
+NumPy's `numpy.dot` is _much_ faster than all alternatives provided by accupy.
+This is because the bookkeeping of truncation errors takes more steps, but
+mostly because of NumPy's highly optimized dot implementation.
 
 
 ### References
