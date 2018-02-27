@@ -19,6 +19,8 @@ kdot_helper(Eigen::Ref<RowMatrixXd> x, Eigen::Ref<RowMatrixXd> y) {
   // Use Eigen::Tensor to avoid stack overflows with native C arrays.
   Eigen::Tensor<double, 4, Eigen::RowMajor> result(2, n, x.rows(), y.cols());
 
+  // After the loop, p will hold the naive values of the dot product, result(0)
+  // the multiplication errors and result(1) the addition errors.
   auto p = RowMatrixXd(x.rows(), y.cols());
   p.setZero();
 
@@ -30,7 +32,7 @@ kdot_helper(Eigen::Ref<RowMatrixXd> x, Eigen::Ref<RowMatrixXd> y) {
         // product with exact error
         double h = x(i, k) * y(k, j);
         result(0, k, i, j) = fma(x(i, k), y(k, j), -h);
-        // knuth sum p+h with exact error z2
+        // Knuth sum: p+h with exact error z2
         double z0 = p(i, j) + h;
         double z1 = z0 - p(i, j);
         double z2 = (p(i, j) - (z0-z1)) + (h-z1);
@@ -40,6 +42,7 @@ kdot_helper(Eigen::Ref<RowMatrixXd> x, Eigen::Ref<RowMatrixXd> y) {
     }
   }
 
+  // Override the meaningless first addition error; it's exactly 0.0 anyways.
   for (int i=0; i < x.rows(); i++)
     for (int j=0; j < y.cols(); j++)
       result(1, 0, i, j) = p(i, j);
