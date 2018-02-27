@@ -51,9 +51,8 @@ def test_accuracy_comparison_illcond(target_cond=None):
         ]
     data = numpy.empty((len(target_cond), len(kernels)))
     condition_numbers = numpy.empty(len(target_cond))
-    for k, target_cond in enumerate(target_cond):
-        x, y, ref, C = \
-            accupy.generate_ill_conditioned_dot_product(1000, target_cond)
+    for k, tc in enumerate(target_cond):
+        x, y, ref, C = accupy.generate_ill_conditioned_dot_product(1000, tc)
         condition_numbers[k] = C
         data[k] = [abs(kernel(x, y) - ref) / abs(ref) for kernel in kernels]
 
