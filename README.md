@@ -42,7 +42,7 @@ All summation methods sum the first dimension of a multidimensional NumPy array.
 
 Let's compare them.
 
-#### Accuracy comparison
+#### Accuracy comparison (sum)
 
 ![](https://nschloe.github.io/accupy/accuracy-sums.png)
 
@@ -62,7 +62,7 @@ Shewchuck's algorithm in `math.fsum` always gives the correct result to full
 floating point precision.
 
 
-#### Speed comparison
+#### Speed comparison (sum)
 
 ![](https://nschloe.github.io/accupy/speed-comparison1.png)
 
@@ -85,7 +85,7 @@ accupy has the following methods for dot products:
 
 Let's compare them.
 
-#### Accuracy comparison
+#### Accuracy comparison (dot)
 
 accupy can construct ill-conditioned dot products with
 ```python
@@ -98,7 +98,7 @@ With this, the accuracy of the different methods is compared.
 As for sums, `numpy.dot` is the least accurate, followed by instanced of `kdot`.
 `fdot` is provably accurate up into the last digit
 
-#### Speed comparison
+#### Speed comparison (dot)
 
 ![](https://nschloe.github.io/accupy/speed-comparison-dot1.png)
 ![](https://nschloe.github.io/accupy/speed-comparison-dot2.png)
