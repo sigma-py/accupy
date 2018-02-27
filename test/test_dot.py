@@ -82,8 +82,7 @@ def test_speed_comparison1(n_range=None):
     if n_range is None:
         n_range = [2**k for k in range(2)]
 
-    perfplot.save(
-        'speed-comparison1.png',
+    perfplot.plot(
         setup=lambda n: (numpy.random.rand(n, 100), numpy.random.rand(100, n)),
         kernels=[
             lambda xy: numpy.dot(*xy),
@@ -97,15 +96,65 @@ def test_speed_comparison1(n_range=None):
             'accupy.kdot[3]',
             'accupy.fdot',
             ],
+        colors=plt.rcParams['axes.prop_cycle'].by_key()['color'][:4],
         n_range=n_range,
         title='dot(random(n, 100), random(100, n))',
         xlabel='n',
         logx=True,
         logy=True,
+        automatic_order=False
+        )
+    plt.gca().set_aspect(0.2)
+    lgd = plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.0)
+    # plt.show()
+    plt.savefig(
+        'speed-comparison-dot1.png',
+        transparent=True,
+        bbox_extra_artists=(lgd,),
+        bbox_inches='tight',
+        )
+    return
+
+
+def test_speed_comparison2(n_range=None):
+    if n_range is None:
+        n_range = [2**k for k in range(2)]
+
+    perfplot.plot(
+        setup=lambda n: (numpy.random.rand(100, n), numpy.random.rand(n, 100)),
+        kernels=[
+            lambda xy: numpy.dot(*xy),
+            lambda xy: accupy.kdot(*xy, K=2),
+            lambda xy: accupy.kdot(*xy, K=3),
+            lambda xy: accupy.fdot(*xy),
+            ],
+        labels=[
+            'numpy.dot',
+            'accupy.kdot[2]',
+            'accupy.kdot[3]',
+            'accupy.fdot',
+            ],
+        colors=plt.rcParams['axes.prop_cycle'].by_key()['color'][:4],
+        n_range=n_range,
+        title='dot(random(100, n), random(n, 100))',
+        xlabel='n',
+        logx=True,
+        logy=True,
+        automatic_order=False
+        )
+    plt.gca().set_aspect(0.2)
+    lgd = plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.0)
+    # plt.show()
+    plt.savefig(
+        'speed-comparison-dot2.png',
+        transparent=True,
+        bbox_extra_artists=(lgd,),
+        bbox_inches='tight',
         )
     return
 
 
 if __name__ == '__main__':
-    # test_accuracy_comparison_illcond([10**k for k in range(0, 37, 3)])
-    test_speed_comparison1(n_range=[2**k for k in range(7)])
+    # test_accuracy_comparison_illcond([10**k for k in range(0, 37, 1)])
+    # test_speed_comparison1(n_range=[2**k for k in range(8)])
+    test_speed_comparison2(n_range=[2**k for k in range(8)])
