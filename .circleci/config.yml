@@ -12,6 +12,7 @@ jobs:
       - run: pip3 install -U pytest pytest-cov pylint
       - checkout
       - run: pip3 install -r test_requirements.txt
+      - run: pip3 install pybind11
       - run: pip3 install .
       # lint
       - run: pylint setup.py accupy/ test/*.py
