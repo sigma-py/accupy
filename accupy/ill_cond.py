@@ -4,8 +4,7 @@ import math
 
 import numpy
 from mpmath import mp
-
-from .dot import prod2_fma
+import pyfma
 
 
 def generate_ill_conditioned_sum(n, c, dps=100):
@@ -15,7 +14,9 @@ def generate_ill_conditioned_sum(n, c, dps=100):
     # summands.
     x, y, _, C = generate_ill_conditioned_dot_product(n, c, dps)
 
-    res = numpy.array(prod2_fma(x, y))
+    prod = x * y
+    err = pyfma.fma(x, y, -prod)
+    res = numpy.array([prod, err])
 
     out = numpy.random.permutation(res.flatten())
 
