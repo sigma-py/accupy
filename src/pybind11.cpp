@@ -6,9 +6,9 @@ namespace py = pybind11;
 using namespace pybind11::literals;
 
 PYBIND11_MODULE(_accupy, m) {
-  m.def("distill", &distill);
-  m.def("kahan", &kahan);
-  m.def("neumaier", &neumaier);
-  m.def("kdot_helper", &kdot_helper);
+  // sum:
   m.def("distill", &distill, "r"_a.noconvert());
+  m.def("kahan", &kahan, "p"_a.noconvert());
+  // dot:
+  m.def("kdot_helper", &kdot_helper, "x"_a.noconvert(), "y"_a.noconvert());
 }
