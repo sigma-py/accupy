@@ -118,6 +118,13 @@ mostly because of NumPy's highly optimized dot implementation.
    Product_, SIAM J. Sci. Comput. (2006), 26(6), 1955–1988 (34
    pages)](https://doi.org/10.1137/030601818)
 
+### Dependencies
+
+accupy needs the C++ [Eigen
+library](http://eigen.tuxfamily.org/index.php?title=Main_Page), provided in
+Debian/Ubuntu by
+[`libeigen3-dev`](https://packages.ubuntu.com/search?keywords=libeigen3-dev).
+
 ### Installation
 
 accupy is [available from the Python Package Index](https://pypi.python.org/pypi/accupy/), so with
