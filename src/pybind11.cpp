@@ -1,13 +1,18 @@
-# ==============================================================================
-# sum.h
-# ==============================================================================
+#include <cmath>
+
 #include <pybind11/pybind11.h>
 #include <pybind11/numpy.h>
 #include <pybind11/eigen.h>
 
+#include <unsupported/Eigen/CXX11/Tensor>
+
 namespace py = pybind11;
+using namespace pybind11::literals;
 
 
+# ==============================================================================
+# sum.h
+# ==============================================================================
 // void
 // distill(py::array_t<double, py::array::c_style | py::array::forcecast> p) {
 //   auto r = p.mutable_unchecked<2>();
@@ -84,14 +89,6 @@ kahan(py::array_t<double, py::array::c_style | py::array::forcecast> p) {
 # Headers aren't automatically installed though;
 # <https://github.com/pypa/packaging-problems/issues/84>.
 # ==============================================================================
-#include <cmath>
-
-#include <pybind11/pybind11.h>
-#include <pybind11/numpy.h>
-
-#include <unsupported/Eigen/CXX11/Tensor>
-
-namespace py = pybind11;
 using RowMatrixXd = Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>;
 
 py::array_t<double>
@@ -139,12 +136,6 @@ kdot_helper(Eigen::Ref<RowMatrixXd> x, Eigen::Ref<RowMatrixXd> y) {
       );
 }
 # ==============================================================================
-
-
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
-using namespace pybind11::literals;
-
 PYBIND11_MODULE(_accupy, m) {
   // sum:
   m.def("distill", &distill, "r"_a.noconvert());
