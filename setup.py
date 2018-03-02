@@ -41,7 +41,7 @@ class get_pybind_include(object):
 ext_modules = [Extension(
     '_accupy',
     [
-        'src/pybind11.cpp',
+        'src/pybind11.cpp'
     ],
     language='c++',
     include_dirs=[
