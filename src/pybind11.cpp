@@ -10,9 +10,9 @@ namespace py = pybind11;
 using namespace pybind11::literals;
 
 
-# ==============================================================================
-# sum.h
-# ==============================================================================
+// =============================================================================
+// sum.h
+// =============================================================================
 // void
 // distill(py::array_t<double, py::array::c_style | py::array::forcecast> p) {
 //   auto r = p.mutable_unchecked<2>();
@@ -84,11 +84,11 @@ kahan(py::array_t<double, py::array::c_style | py::array::forcecast> p) {
   }
   return s;
 }
-# ==============================================================================
-# dot.h
-# Headers aren't automatically installed though;
-# <https://github.com/pypa/packaging-problems/issues/84>.
-# ==============================================================================
+// =============================================================================
+// dot.h
+// Headers aren't automatically installed though;
+// <https://github.com/pypa/packaging-problems/issues/84>.
+// =============================================================================
 using RowMatrixXd = Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>;
 
 py::array_t<double>
@@ -135,7 +135,7 @@ kdot_helper(Eigen::Ref<RowMatrixXd> x, Eigen::Ref<RowMatrixXd> y) {
       result.data()
       );
 }
-# ==============================================================================
+// =============================================================================
 PYBIND11_MODULE(_accupy, m) {
   // sum:
   m.def("distill", &distill, "r"_a.noconvert());
