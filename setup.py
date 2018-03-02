@@ -42,6 +42,8 @@ ext_modules = [Extension(
     '_accupy',
     [
         'src/pybind11.cpp',
+        'src/dot.hpp',
+        'src/sum.hpp',
     ],
     language='c++',
     include_dirs=[
