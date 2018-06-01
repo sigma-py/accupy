@@ -41,6 +41,10 @@ ext_modules = [Extension(
     )]
 
 
+def read(fname):
+    return codecs.open(os.path.join(base_dir, fname), encoding='utf-8').read()
+
+
 setup(
     name='accupy',
     version=about['__version__'],
