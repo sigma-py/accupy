@@ -9,8 +9,6 @@ import perfplot
 
 import accupy
 
-numpy.random.seed(0)
-
 
 @pytest.mark.parametrize('cond', [1.0, 1.0e15])
 def test_ksum2(cond):
@@ -57,10 +55,16 @@ def test_accuracy_comparison_illcond(target_conds=None):
 
     data = numpy.empty((len(target_conds), len(kernels)))
     condition_numbers = numpy.empty(len(target_conds))
+    numpy.random.seed(0)
     for k, target_cond in enumerate(target_conds):
         p, ref, C = accupy.generate_ill_conditioned_sum(1000, target_cond)
         condition_numbers[k] = C
         data[k] = [abs(kernel(p) - ref) / abs(ref) for kernel in kernels]
+
+    # sort
+    s = numpy.argsort(condition_numbers)
+    condition_numbers = condition_numbers[s]
+    data = data[s]
 
     for label, color, d in zip(labels, colors, data.T):
         plt.loglog(condition_numbers, d, label=label, color=color)
@@ -87,6 +91,7 @@ def test_speed_comparison1(n_range=None):
     if n_range is None:
         n_range = [2**k for k in range(2)]
 
+    numpy.random.seed(0)
     perfplot.plot(
         setup=lambda n: numpy.random.rand(n, 100),
         kernels=[
@@ -129,6 +134,7 @@ def test_speed_comparison2(n_range=None):
     if n_range is None:
         n_range = [2**k for k in range(2)]
 
+    numpy.random.seed(0)
     perfplot.plot(
         setup=lambda n: numpy.random.rand(100, n),
         kernels=[
@@ -194,6 +200,6 @@ def test_decker_sum():
 
 
 if __name__ == '__main__':
-    test_accuracy_comparison_illcond([10**k for k in range(0, 37, 3)])
+    test_accuracy_comparison_illcond([10**k for k in range(0, 37, 1)])
     # test_speed_comparison1(n_range=[2**k for k in range(15)])
     # test_speed_comparison2(n_range=[2**k for k in range(15)])
