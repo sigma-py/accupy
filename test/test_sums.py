@@ -31,6 +31,7 @@ def test_fsum(cond):
     return
 
 
+# pylint: disable=too-many-locals
 def test_accuracy_comparison_illcond(target_conds=None):
     if target_conds is None:
         target_conds = [10**k for k in range(1, 2)]
@@ -51,7 +52,7 @@ def test_accuracy_comparison_illcond(target_conds=None):
         'accupy.ksum[3]',
         'accupy.fsum',
         ]
-    colors = plt.rcParams['axes.prop_cycle'].by_key()['color'][:6]
+    colors = plt.rcParams['axes.prop_cycle'].by_key()['color'][:len(labels)]
 
     data = numpy.empty((len(target_conds), len(kernels)))
     condition_numbers = numpy.empty(len(target_conds))
