@@ -6,7 +6,7 @@ Accurate sums and (dot) products for Python.
 [![codecov](https://img.shields.io/codecov/c/github/nschloe/accupy.svg)](https://codecov.io/gh/nschloe/accupy)
 [![Codacy grade](https://img.shields.io/codacy/grade/fe8097aff5cc48aca70f4b4475755126.svg)](https://app.codacy.com/app/nschloe/accupy/dashboard)
 [![accurate](https://img.shields.io/badge/accurate-very-brightgreen.svg)](https://img.shields.io/badge/accurate-very-brightgreen.svg)
-[![PyPi Version](https://img.shields.io/pypi/v/accupy.svg)](https://pypi.python.org/pypi/accupy)
+[![PyPi Version](https://img.shields.io/pypi/v/accupy.svg)](https://pypi.org/project/accupy)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1185173.svg)](https://doi.org/10.5281/zenodo.1185173)
 [![GitHub stars](https://img.shields.io/github/stars/nschloe/accupy.svg?logo=github&label=Stars)](https://github.com/nschloe/accupy)
 
@@ -129,7 +129,7 @@ Debian/Ubuntu by
 
 ### Installation
 
-accupy is [available from the Python Package Index](https://pypi.python.org/pypi/accupy/), so with
+accupy is [available from the Python Package Index](https://pypi.org/project/accupy/), so with
 ```
 pip install -U accupy
 ```
