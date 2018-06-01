@@ -9,8 +9,6 @@ import perfplot
 
 import accupy
 
-numpy.random.seed(0)
-
 
 @pytest.mark.parametrize('cond', [1.0, 1.0e15])
 def test_kdot2(cond):
@@ -51,10 +49,16 @@ def test_accuracy_comparison_illcond(target_cond=None):
         ]
     data = numpy.empty((len(target_cond), len(kernels)))
     condition_numbers = numpy.empty(len(target_cond))
+    numpy.random.seed(0)
     for k, tc in enumerate(target_cond):
         x, y, ref, C = accupy.generate_ill_conditioned_dot_product(1000, tc)
         condition_numbers[k] = C
         data[k] = [abs(kernel(x, y) - ref) / abs(ref) for kernel in kernels]
+
+    # sort
+    s = numpy.argsort(condition_numbers)
+    condition_numbers = condition_numbers[s]
+    data = data[s]
 
     for label, d in zip(labels, data.T):
         plt.loglog(condition_numbers, d, label=label)
@@ -81,6 +85,7 @@ def test_speed_comparison1(n_range=None):
     if n_range is None:
         n_range = [2**k for k in range(2)]
 
+    numpy.random.seed(0)
     perfplot.plot(
         setup=lambda n: (numpy.random.rand(n, 100), numpy.random.rand(100, n)),
         kernels=[
@@ -119,6 +124,7 @@ def test_speed_comparison2(n_range=None):
     if n_range is None:
         n_range = [2**k for k in range(2)]
 
+    numpy.random.seed(0)
     perfplot.plot(
         setup=lambda n: (numpy.random.rand(100, n), numpy.random.rand(n, 100)),
         kernels=[
@@ -154,6 +160,6 @@ def test_speed_comparison2(n_range=None):
 
 
 if __name__ == '__main__':
-    # test_accuracy_comparison_illcond([10**k for k in range(0, 37, 1)])
+    test_accuracy_comparison_illcond([10**k for k in range(0, 37, 1)])
     # test_speed_comparison1(n_range=[2**k for k in range(8)])
-    test_speed_comparison2(n_range=[2**k for k in range(8)])
+    # test_speed_comparison2(n_range=[2**k for k in range(8)])

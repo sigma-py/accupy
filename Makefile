@@ -3,13 +3,8 @@ VERSION=$(shell python3 -c "import accupy; print(accupy.__version__)")
 default:
 	@echo "\"make publish\"?"
 
-README.rst: README.md
-	cat README.md | sed 's_<img src="\([^"]*\)" width="\([^"]*\)">_![](\1){width="\2"}_g' > /tmp/README.md
-	pandoc /tmp/README.md -o README.rst
-	python3 setup.py check -r -s || exit 1
-
 # https://packaging.python.org/distributing/#id72
-upload: setup.py README.rst
+upload: setup.py
 	# Make sure we're on the master branch
 	@if [ "$(shell git rev-parse --abbrev-ref HEAD)" != "master" ]; then exit 1; fi
 	python3 setup.py sdist upload --sign
@@ -23,4 +18,8 @@ tag:
 publish: tag upload
 
 clean:
-	rm -f README.rst
+	@find . | grep -E "(__pycache__|\.pyc|\.pyo$\)" | xargs rm -rf
+	@rm -rf *.egg-info/ build/ dist/ MANIFEST
+
+lint:
+	pylint setup.py accupy/ test/*.py
