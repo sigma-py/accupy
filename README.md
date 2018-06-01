@@ -8,7 +8,7 @@ Accurate sums and (dot) products for Python.
 [![accurate](https://img.shields.io/badge/accurate-very-brightgreen.svg)](https://img.shields.io/badge/accurate-very-brightgreen.svg)
 [![PyPi Version](https://img.shields.io/pypi/v/accupy.svg)](https://pypi.python.org/pypi/accupy)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1185173.svg)](https://doi.org/10.5281/zenodo.1185173)
-[![GitHub stars](https://img.shields.io/github/stars/nschloe/accupy.svg?style=social&label=Stars)](https://github.com/nschloe/accupy)
+[![GitHub stars](https://img.shields.io/github/stars/nschloe/accupy.svg?logo=github&label=Stars)](https://github.com/nschloe/accupy)
 
 
 ### Sums
@@ -25,8 +25,8 @@ tricky than that. accupy provides
 ```python
 p, exact, cond = accupy.generate_ill_conditioned_sum(100, 1.0e20)
 ```
-which given a length and a target condition number will produce an array if
-floating point numbers that's hard to sum up.
+which, given a length and a target condition number, will produce an array of
+floating point numbers that is hard to sum up.
 
 accupy has the following methods for summation:
 
@@ -64,7 +64,7 @@ Shewchuck's algorithm in `math.fsum` always gives the correct result to full
 floating point precision.
 
 
-#### Speed comparison (sum)
+#### Runtime comparison (sum)
 
 ![](https://nschloe.github.io/accupy/speed-comparison1.png)
 
@@ -100,7 +100,7 @@ With this, the accuracy of the different methods is compared.
 As for sums, `numpy.dot` is the least accurate, followed by instanced of `kdot`.
 `fdot` is provably accurate up into the last digit
 
-#### Speed comparison (dot)
+#### Runtime comparison (dot)
 
 ![](https://nschloe.github.io/accupy/speed-comparison-dot1.png)
 ![](https://nschloe.github.io/accupy/speed-comparison-dot2.png)
