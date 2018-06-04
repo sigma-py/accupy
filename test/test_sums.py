@@ -31,7 +31,6 @@ def test_fsum(cond):
     return
 
 
-# pylint: disable=too-many-locals
 def test_accuracy_comparison_illcond(target_conds=None):
     if target_conds is None:
         target_conds = [10 ** k for k in range(1, 2)]
