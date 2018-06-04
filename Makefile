@@ -7,7 +7,9 @@ default:
 upload: setup.py
 	# Make sure we're on the master branch
 	@if [ "$(shell git rev-parse --abbrev-ref HEAD)" != "master" ]; then exit 1; fi
-	python3 setup.py sdist upload --sign
+	rm -rf dist/*
+	python3 setup.py sdist
+	twine upload dist/*.tar.gz
 
 tag:
 	@if [ "$(shell git rev-parse --abbrev-ref HEAD)" != "master" ]; then exit 1; fi
