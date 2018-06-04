@@ -13,7 +13,7 @@ jobs:
       - run: pip3 install -r test_requirements.txt
       - run: pip3 install .
       # format and lint
-      - run: LC_ALL=C.UTF-8 --check setup.py accupy/ test/*.py
+      - run: LC_ALL=C.UTF-8 black --check setup.py accupy/ test/*.py
       - run: flake8 setup.py accupy/ test/*.py
       # The tests
       - run: cd test/ && MPLBACKEND=Agg pytest --cov accupy
