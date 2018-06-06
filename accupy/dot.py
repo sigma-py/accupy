@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 #
+import numpy
+
 import _accupy
 
 from .sums import ksum, fsum
@@ -24,6 +26,10 @@ def kdot(x, y, K=2):
     """
     xx = x.reshape(-1, x.shape[-1])
     yy = y.reshape(y.shape[0], -1)
+
+    xx = numpy.ascontiguousarray(xx)
+    yy = numpy.ascontiguousarray(yy)
+
     r = _accupy.kdot_helper(xx, yy).reshape((-1,) + x.shape[:-1] + y.shape[1:])
     return ksum(r, K - 1)
 
@@ -34,5 +40,9 @@ def fdot(x, y):
     """
     xx = x.reshape(-1, x.shape[-1])
     yy = y.reshape(y.shape[0], -1)
+
+    xx = numpy.ascontiguousarray(xx)
+    yy = numpy.ascontiguousarray(yy)
+
     r = _accupy.kdot_helper(xx, yy).reshape((-1,) + x.shape[:-1] + y.shape[1:])
     return fsum(r)

@@ -144,6 +144,15 @@ def test_speed_comparison2(n_range=None):
     return
 
 
+def test_discontiguous():
+    x = numpy.random.rand(3, 10)
+    y = numpy.random.rand(3, 10)
+
+    accupy.kdot(x.T, y)
+    accupy.fdot(x.T, y)
+    return
+
+
 if __name__ == "__main__":
     test_accuracy_comparison_illcond([10 ** k for k in range(0, 37, 1)])
     # test_speed_comparison1(n_range=[2**k for k in range(8)])
