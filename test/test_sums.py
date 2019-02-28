@@ -174,7 +174,7 @@ def test_speed_comparison2(n_range=None):
 
 
 def test_knuth_sum():
-    a16 = numpy.float16(1.0e+1)
+    a16 = numpy.float16(1.0e1)
     b16 = numpy.float16(1.0e-1)
 
     x16, y16 = accupy.knuth_sum(a16, b16)
@@ -187,7 +187,7 @@ def test_knuth_sum():
 
 
 def test_decker_sum():
-    a16 = numpy.float16(1.0e+1)
+    a16 = numpy.float16(1.0e1)
     b16 = numpy.float16(1.0e-1)
 
     x16, y16 = accupy.decker_sum(a16, b16)
