@@ -46,7 +46,7 @@ setup(
     url="https://github.com/nschloe/accupy",
     author=about["__author__"],
     author_email=about["__email__"],
-    install_requires=["mpmath", "numpy", "pipdate", "pybind11 >= 2.2", "pyfma"],
+    install_requires=["mpmath", "numpy", "pybind11 >= 2.2", "pyfma"],
     python_requires=">=3",
     description="Accurate sums and dot products for Python",
     long_description=read("README.md"),
