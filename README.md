@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://github.com/nschloe/accupy"><img alt="accupy" src="https://nschloe.github.io/accupy/logo-with-text.svg" width="60%"></a>
+  <a href="https://github.com/nschloe/accupy"><img alt="accupy" src="https://nschloe.github.io/accupy/logo-with-text.svg" width="40%"></a>
   <p align="center">Accurate sums and (dot) products for Python.</p>
 </p>
 
