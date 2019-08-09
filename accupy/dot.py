@@ -1,11 +1,7 @@
-# -*- coding: utf-8 -*-
-#
+import _accupy
 import numpy
 
-import _accupy
-
-from .sums import ksum, fsum
-
+from .sums import fsum, ksum
 
 # def dot2(x, y, prod2=prod2_fma):
 #     '''Algorithm 5.3. Dot product in twice the working precision.

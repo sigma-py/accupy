@@ -1,15 +1,16 @@
-# accupy
+<p align="center">
+  <a href="https://github.com/nschloe/accupy"><img alt="accupy" src="https://nschloe.github.io/accupy/logo-with-text.svg" width="40%"></a>
+  <p align="center">Accurate sums and (dot) products for Python.</p>
+</p>
 
-Accurate sums and (dot) products for Python.
-
-[![CircleCI](https://img.shields.io/circleci/project/github/nschloe/accupy/master.svg)](https://circleci.com/gh/nschloe/accupy/tree/master)
-[![codecov](https://img.shields.io/codecov/c/github/nschloe/accupy.svg)](https://codecov.io/gh/nschloe/accupy)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
-[![accurate](https://img.shields.io/badge/accurate-very-brightgreen.svg)](https://github.com/nschloe/accupy)
-[![PyPi Version](https://img.shields.io/pypi/v/accupy.svg)](https://pypi.org/project/accupy)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1185173.svg)](https://doi.org/10.5281/zenodo.1185173)
-[![GitHub stars](https://img.shields.io/github/stars/nschloe/accupy.svg?logo=github&label=Stars&logoColor=white)](https://github.com/nschloe/accupy)
-
+[![CircleCI](https://img.shields.io/circleci/project/github/nschloe/accupy/master.svg?style=flat-square)](https://circleci.com/gh/nschloe/accupy/tree/master)
+[![codecov](https://img.shields.io/codecov/c/github/nschloe/accupy.svg?style=flat-square)](https://codecov.io/gh/nschloe/accupy)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=flat-square)](https://github.com/psf/black)
+[![accurate](https://img.shields.io/badge/accurate-very-brightgreen.svg?style=flat-square)](https://github.com/nschloe/accupy)
+[![PyPi Version](https://img.shields.io/pypi/v/accupy.svg?style=flat-square)](https://pypi.org/project/accupy)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1185173.svg?style=flat-square)](https://doi.org/10.5281/zenodo.1185173)
+[![GitHub stars](https://img.shields.io/github/stars/nschloe/accupy.svg?style=flat-square&logo=github&label=Stars&logoColor=white)](https://github.com/nschloe/accupy)
+[![PyPi downloads](https://img.shields.io/pypi/dd/accupy.svg?style=flat-square)](https://pypistats.org/packages/accupy)
 
 ### Sums
 
@@ -141,17 +142,6 @@ To run the tests, just check out this repository and type
 ```
 MPLBACKEND=Agg pytest
 ```
-
-### Distribution
-
-To create a new release
-
-1. bump the `__version__` number,
-
-2. publish to PyPi and GitHub:
-    ```
-    $ make publish
-    ```
 
 ### License
 accupy is published under the [MIT license](https://en.wikipedia.org/wiki/MIT_License).

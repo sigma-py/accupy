@@ -1,9 +1,7 @@
-# -*- coding: utf-8 -*-
-#
-import os
 import codecs
+import os
 
-from setuptools import setup, find_packages, Extension
+from setuptools import Extension, find_packages, setup
 
 # https://packaging.python.org/single_source_version/
 base_dir = os.path.abspath(os.path.dirname(__file__))
@@ -13,12 +11,6 @@ with open(os.path.join(base_dir, "accupy", "__about__.py"), "rb") as f:
 
 
 class get_pybind_include(object):
-    """Helper class to determine the pybind11 include path
-    The purpose of this class is to postpone importing pybind11
-    until it is actually installed, so that the ``get_include()``
-    method can be invoked.
-    """
-
     def __init__(self, user=False):
         self.user = user
 
@@ -54,7 +46,8 @@ setup(
     url="https://github.com/nschloe/accupy",
     author=about["__author__"],
     author_email=about["__email__"],
-    install_requires=["mpmath", "numpy", "pipdate", "pybind11 >= 2.2", "pyfma"],
+    install_requires=["mpmath", "numpy", "pybind11 >= 2.2", "pyfma"],
+    python_requires=">=3",
     description="Accurate sums and dot products for Python",
     long_description=read("README.md"),
     long_description_content_type="text/markdown",
@@ -64,7 +57,6 @@ setup(
         about["__status__"],
         "Operating System :: OS Independent",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 2",
         "Programming Language :: Python :: 3",
         "Topic :: Scientific/Engineering",
         "Topic :: Scientific/Engineering :: Mathematics",

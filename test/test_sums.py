@@ -1,13 +1,9 @@
-# -*- coding: utf-8 -*-
-#
-from __future__ import division
-
 import matplotlib.pyplot as plt
 import numpy
 import pytest
-import perfplot
 
 import accupy
+import perfplot
 
 
 @pytest.mark.parametrize("cond", [1.0, 1.0e15])
