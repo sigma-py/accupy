@@ -1,8 +1,7 @@
 import math
 
-import numpy
-
 import _accupy
+import numpy
 
 
 def knuth_sum(a, b):

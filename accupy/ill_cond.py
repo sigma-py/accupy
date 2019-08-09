@@ -1,8 +1,8 @@
 import math
 
 import numpy
-from mpmath import mp
 import pyfma
+from mpmath import mp
 
 
 def generate_ill_conditioned_sum(n, c, dps=100):
