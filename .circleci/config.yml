@@ -3,30 +3,31 @@ version: 2
 jobs:
   lint:
     docker:
-      - image: ubuntu:18.04
+      - image: circleci/python:3.7
     steps:
       - checkout
-      - run: apt update
-      - run: apt install -y python3-pip
-      - run: pip3 install -U black flake8
-      - run: LC_ALL=C.UTF-8 black --check setup.py accupy/ test/*.py
-      - run: flake8 setup.py accupy/ test/*.py
+      - run: pip3 install -U black flake8 --user
+      - run: black --check .
+      - run: flake8 .
 
   build:
     working_directory: ~/work
     docker:
-      - image: ubuntu:18.04
+      - image: circleci/python:3.7
     steps:
-      - run: apt-get update
-      - run: apt-get install -y git python3-pip libeigen3-dev
-      - run: pip3 install -U pytest pytest-cov
+      - run: sudo apt-get update
+      - run: sudo apt-get install -y libeigen3-dev
+      - run: pip3 install -U pytest pytest-cov --user
       - checkout
-      - run: pip3 install -r test_requirements.txt
-      - run: pip3 install .
+      - run: pip3 install -r test_requirements.txt --user
+      - run: pip3 install . --user
       # The tests
-      - run: cd test/ && MPLBACKEND=Agg pytest --cov accupy
+      - run:
+          command: pytest --cov accupy
+          working_directory: test/
+          environment:
+            MPLBACKEND: Agg
       # submit to codecov
-      - run: apt-get install -y curl
       - run: bash <(curl -s https://codecov.io/bash)
 
 workflows:
