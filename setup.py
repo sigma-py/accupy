@@ -1,12 +1,4 @@
-import os
-
 from setuptools import Extension, find_packages, setup
-
-# https://packaging.python.org/single_source_version/
-base_dir = os.path.abspath(os.path.dirname(__file__))
-about = {}
-with open(os.path.join(base_dir, "accupy", "__about__.py"), "rb") as f:
-    exec(f.read(), about)
 
 
 class get_pybind_include:
@@ -35,21 +27,28 @@ ext_modules = [
 
 setup(
     name="accupy",
-    version=about["__version__"],
+    version="0.2.0",
     packages=find_packages(),
     ext_modules=ext_modules,
     url="https://github.com/nschloe/accupy",
-    author=about["__author__"],
-    author_email=about["__email__"],
-    install_requires=["mpmath", "numpy", "pybind11 >= 2.2", "pyfma"],
+    author="Nico Schlömer",
+    author_email="nico.schloemer@gmail.com",
+    # importlib_metadata can be removed when we support Python 3.8+ only
+    install_requires=[
+        "importlib_metadata",
+        "mpmath",
+        "numpy",
+        "pybind11 >= 2.2",
+        "pyfma",
+    ],
     python_requires=">=3.6",
     description="Accurate sums and dot products for Python",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
-    license=about["__license__"],
+    license="MIT",
     classifiers=[
-        about["__license__"],
-        about["__status__"],
+        "License :: OSI Approved :: MIT License",
+        "Development Status :: 4 - Beta",
         "Operating System :: OS Independent",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
