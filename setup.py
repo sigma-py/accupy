@@ -45,10 +45,10 @@ setup(
     description="Accurate sums and dot products for Python",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
-    license="MIT",
+    license="GPLv3+",
     classifiers=[
-        "License :: OSI Approved :: MIT License",
         "Development Status :: 4 - Beta",
+        "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
         "Operating System :: OS Independent",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
