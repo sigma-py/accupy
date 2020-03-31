@@ -132,9 +132,9 @@ Debian/Ubuntu by
 
 accupy is [available from the Python Package Index](https://pypi.org/project/accupy/), so with
 ```
-pip install -U accupy
+pip install accupy
 ```
-you can install/upgrade.
+you can install.
 
 ### Testing
 

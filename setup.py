@@ -10,7 +10,7 @@ with open(os.path.join(base_dir, "accupy", "__about__.py"), "rb") as f:
     exec(f.read(), about)
 
 
-class get_pybind_include(object):
+class get_pybind_include:
     def __init__(self, user=False):
         self.user = user
 
@@ -47,7 +47,7 @@ setup(
     author=about["__author__"],
     author_email=about["__email__"],
     install_requires=["mpmath", "numpy", "pybind11 >= 2.2", "pyfma"],
-    python_requires=">=3",
+    python_requires=">=3.6",
     description="Accurate sums and dot products for Python",
     long_description=read("README.md"),
     long_description_content_type="text/markdown",
@@ -58,6 +58,9 @@ setup(
         "Operating System :: OS Independent",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
         "Topic :: Scientific/Engineering",
         "Topic :: Scientific/Engineering :: Mathematics",
     ],
