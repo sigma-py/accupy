@@ -7,6 +7,7 @@
 [![codecov](https://img.shields.io/codecov/c/github/nschloe/accupy.svg?style=flat-square)](https://codecov.io/gh/nschloe/accupy)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=flat-square)](https://github.com/psf/black)
 [![accurate](https://img.shields.io/badge/accurate-very-brightgreen.svg?style=flat-square)](https://github.com/nschloe/accupy)
+[![PyPI pyversions](https://img.shields.io/pypi/pyversions/accupy.svg?style=flat-square)](https://pypi.org/pypi/accupy/)
 [![PyPi Version](https://img.shields.io/pypi/v/accupy.svg?style=flat-square)](https://pypi.org/project/accupy)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1185173.svg?style=flat-square)](https://doi.org/10.5281/zenodo.1185173)
 [![GitHub stars](https://img.shields.io/github/stars/nschloe/accupy.svg?style=flat-square&logo=github&label=Stars&logoColor=white)](https://github.com/nschloe/accupy)
