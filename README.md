@@ -7,6 +7,7 @@
 [![codecov](https://img.shields.io/codecov/c/github/nschloe/accupy.svg?style=flat-square)](https://codecov.io/gh/nschloe/accupy)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=flat-square)](https://github.com/psf/black)
 [![accurate](https://img.shields.io/badge/accurate-very-brightgreen.svg?style=flat-square)](https://github.com/nschloe/accupy)
+[![PyPI pyversions](https://img.shields.io/pypi/pyversions/accupy.svg?style=flat-square)](https://pypi.org/pypi/accupy/)
 [![PyPi Version](https://img.shields.io/pypi/v/accupy.svg?style=flat-square)](https://pypi.org/project/accupy)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1185173.svg?style=flat-square)](https://doi.org/10.5281/zenodo.1185173)
 [![GitHub stars](https://img.shields.io/github/stars/nschloe/accupy.svg?style=flat-square&logo=github&label=Stars&logoColor=white)](https://github.com/nschloe/accupy)
@@ -47,7 +48,7 @@ Let's compare them.
 
 #### Accuracy comparison (sum)
 
-![](https://nschloe.github.io/accupy/accuracy-sums.png)
+![](https://nschloe.github.io/accupy/accuracy-sums.svg)
 
 As expected, the naive
 [sum](https://docs.python.org/3/library/functions.html#sum) performs very badly
@@ -67,9 +68,9 @@ floating point precision.
 
 #### Runtime comparison (sum)
 
-![](https://nschloe.github.io/accupy/speed-comparison1.png)
+![](https://nschloe.github.io/accupy/speed-comparison1.svg)
 
-![](https://nschloe.github.io/accupy/speed-comparison2.png)
+![](https://nschloe.github.io/accupy/speed-comparison2.svg)
 
 We compare more and more sums of fixed size (above) and larger and larger sums,
 but a fixed number of them (below). In both cases, the least accurate method is
@@ -96,15 +97,15 @@ x, y, exact, cond = accupy.generate_ill_conditioned_dot_product(100, 1.0e20)
 ```
 With this, the accuracy of the different methods is compared.
 
-![](https://nschloe.github.io/accupy/accuracy-dot.png)
+![](https://nschloe.github.io/accupy/accuracy-dot.svg)
 
 As for sums, `numpy.dot` is the least accurate, followed by instanced of `kdot`.
 `fdot` is provably accurate up into the last digit
 
 #### Runtime comparison (dot)
 
-![](https://nschloe.github.io/accupy/speed-comparison-dot1.png)
-![](https://nschloe.github.io/accupy/speed-comparison-dot2.png)
+![](https://nschloe.github.io/accupy/speed-comparison-dot1.svg)
+![](https://nschloe.github.io/accupy/speed-comparison-dot2.svg)
 
 NumPy's `numpy.dot` is _much_ faster than all alternatives provided by accupy.
 This is because the bookkeeping of truncation errors takes more steps, but
@@ -132,9 +133,9 @@ Debian/Ubuntu by
 
 accupy is [available from the Python Package Index](https://pypi.org/project/accupy/), so with
 ```
-pip install -U accupy
+pip install accupy
 ```
-you can install/upgrade.
+you can install.
 
 ### Testing
 
@@ -144,4 +145,4 @@ MPLBACKEND=Agg pytest
 ```
 
 ### License
-accupy is published under the [MIT license](https://en.wikipedia.org/wiki/MIT_License).
+accupy is published under the [GPLv3+ license](https://www.gnu.org/licenses/gpl-3.0.en.html).

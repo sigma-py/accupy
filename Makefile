@@ -1,4 +1,5 @@
-VERSION=$(shell python3 -c "import accupy; print(accupy.__version__)")
+# This should best be read from setup.{py,cfg}
+VERSION="0.3.0"
 
 default:
 	@echo "\"make publish\"?"
@@ -13,9 +14,10 @@ upload: setup.py
 
 tag:
 	@if [ "$(shell git rev-parse --abbrev-ref HEAD)" != "master" ]; then exit 1; fi
-	@echo "Tagging v$(VERSION)..."
-	git tag v$(VERSION)
-	git push --tags
+	# @echo "Tagging v$(VERSION)..."
+	# git tag v$(VERSION)
+	# git push --tags
+	curl -H "Authorization: token `cat $(HOME)/.github-access-token`" -d '{"tag_name": "v$(VERSION)"}' https://api.github.com/repos/nschloe/accupy/releases
 
 publish: tag upload
 
@@ -32,4 +34,4 @@ black:
 
 lint:
 	black --check .
-	flake8 setup.py accupy/ test/*.py
+	flake8 .

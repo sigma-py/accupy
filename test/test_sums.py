@@ -75,7 +75,7 @@ def test_accuracy_comparison_illcond(target_conds=None):
     # plt.show()
     # <https://stackoverflow.com/a/10154763/353337>
     plt.savefig(
-        "accuracy-sums.png",
+        "accuracy-sums.svg",
         transparent=True,
         bbox_extra_artists=(lgd,),
         bbox_inches="tight",
@@ -118,7 +118,7 @@ def test_speed_comparison1(n_range=None):
     lgd = plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.0)
     # plt.show()
     plt.savefig(
-        "speed-comparison1.png",
+        "speed-comparison1.svg",
         transparent=True,
         bbox_extra_artists=(lgd,),
         bbox_inches="tight",
@@ -161,7 +161,7 @@ def test_speed_comparison2(n_range=None):
     lgd = plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.0)
     # plt.show()
     plt.savefig(
-        "speed-comparison2.png",
+        "speed-comparison2.svg",
         transparent=True,
         bbox_extra_artists=(lgd,),
         bbox_inches="tight",
@@ -204,6 +204,6 @@ def test_discontiguous():
 
 
 if __name__ == "__main__":
-    test_accuracy_comparison_illcond([10 ** k for k in range(0, 37, 1)])
+    # test_accuracy_comparison_illcond([10 ** k for k in range(0, 37, 1)])
     # test_speed_comparison1(n_range=[2**k for k in range(15)])
-    # test_speed_comparison2(n_range=[2**k for k in range(15)])
+    test_speed_comparison2(n_range=[2 ** k for k in range(15)])

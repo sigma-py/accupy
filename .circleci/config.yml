@@ -6,7 +6,7 @@ jobs:
       - image: circleci/python:3.7
     steps:
       - checkout
-      - run: pip3 install -U black flake8 --user
+      - run: pip3 install black flake8
       - run: black --check .
       - run: flake8 .
 
@@ -17,10 +17,10 @@ jobs:
     steps:
       - run: sudo apt-get update
       - run: sudo apt-get install -y libeigen3-dev
-      - run: pip3 install -U pytest pytest-cov --user
+      - run: pip3 install -U pytest pytest-cov
       - checkout
-      - run: pip3 install -r test_requirements.txt --user
-      - run: pip3 install . --user
+      - run: pip3 install -r test_requirements.txt
+      - run: pip3 install .
       # The tests
       - run:
           command: pytest --cov accupy
