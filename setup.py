@@ -27,7 +27,7 @@ ext_modules = [
 
 setup(
     name="accupy",
-    version="0.2.0",
+    version="0.3.0",
     packages=find_packages(),
     ext_modules=ext_modules,
     url="https://github.com/nschloe/accupy",

@@ -1,4 +1,5 @@
-VERSION=$(shell python3 -c "import accupy; print(accupy.__version__)")
+# This should best be read from setup.{py,cfg}
+VERSION="0.3.0"
 
 default:
 	@echo "\"make publish\"?"
