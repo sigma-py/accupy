@@ -1,4 +1,3 @@
-import codecs
 import os
 
 from setuptools import Extension, find_packages, setup
@@ -34,10 +33,6 @@ ext_modules = [
 ]
 
 
-def read(fname):
-    return codecs.open(os.path.join(base_dir, fname), encoding="utf-8").read()
-
-
 setup(
     name="accupy",
     version=about["__version__"],
@@ -49,7 +44,7 @@ setup(
     install_requires=["mpmath", "numpy", "pybind11 >= 2.2", "pyfma"],
     python_requires=">=3.6",
     description="Accurate sums and dot products for Python",
-    long_description=read("README.md"),
+    long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
     license=about["__license__"],
     classifiers=[
