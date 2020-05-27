@@ -91,7 +91,7 @@ class BuildExt(build_ext):
 
 setup(
     name="accupy",
-    version="0.3.0",
+    version="0.3.1",
     packages=find_packages(),
     ext_modules=ext_modules,
     url="https://github.com/nschloe/accupy",
