@@ -112,7 +112,6 @@ def test_speed_comparison1(n_range=None):
         xlabel="n",
         logx=True,
         logy=True,
-        automatic_order=False,
     )
     plt.gca().set_aspect(0.5)
     lgd = plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.0)
@@ -155,7 +154,6 @@ def test_speed_comparison2(n_range=None):
         xlabel="n",
         logx=True,
         logy=True,
-        automatic_order=False,
     )
     plt.gca().set_aspect(0.5)
     lgd = plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.0)
