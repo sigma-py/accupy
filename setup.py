@@ -111,7 +111,8 @@ setup(
     description="Accurate sums and dot products for Python",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
-    license="GPLv3+",
+    license="GPL-3.0-or-later",
+    license_file="LICENSE",
     classifiers=[
         "Development Status :: 4 - Beta",
         "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
