@@ -91,15 +91,14 @@ class BuildExt(build_ext):
 
 setup(
     name="accupy",
-    version="0.3.1",
+    version="0.3.2",
     packages=find_packages(),
     ext_modules=ext_modules,
     url="https://github.com/nschloe/accupy",
     author="Nico Schlömer",
     author_email="nico.schloemer@gmail.com",
-    # importlib_metadata can be removed when we support Python 3.8+ only
     install_requires=[
-        "importlib_metadata",
+        "importlib_metadata;python_version<'3.8'",
         "mpmath",
         "numpy",
         "pybind11 >= 2.5.0",
