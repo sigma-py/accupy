@@ -1,9 +1,9 @@
 import matplotlib.pyplot as plt
 import numpy
+import perfplot
 import pytest
 
 import accupy
-import perfplot
 
 
 @pytest.mark.parametrize("cond", [1.0, 1.0e15])
