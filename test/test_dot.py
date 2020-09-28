@@ -9,21 +9,21 @@ import perfplot
 @pytest.mark.parametrize("cond", [1.0, 1.0e15])
 def test_kdot2(cond):
     x, y, ref, _ = accupy.generate_ill_conditioned_dot_product(100, cond)
-    assert abs(accupy.kdot(x, y, K=2) - ref) < 1.0e-15 * abs(ref)
+    assert abs(accupy.kdot(x, y, K=2) - ref) < 1.0e-13 * abs(ref)
     return
 
 
 @pytest.mark.parametrize("cond", [1.0, 1.0e15, 1.0e30])
 def test_kdot3(cond):
     x, y, ref, _ = accupy.generate_ill_conditioned_dot_product(100, cond)
-    assert abs(accupy.kdot(x, y, K=3) - ref) < 1.0e-15 * abs(ref)
+    assert abs(accupy.kdot(x, y, K=3) - ref) < 1.0e-13 * abs(ref)
     return
 
 
 @pytest.mark.parametrize("cond", [1.0, 1.0e15, 1.0e30, 1.0e38])
 def test_fdot(cond):
     x, y, ref, _ = accupy.generate_ill_conditioned_dot_product(100, cond)
-    assert abs(accupy.fdot(x, y) - ref) < 1.0e-15 * abs(ref)
+    assert abs(accupy.fdot(x, y) - ref) < 1.0e-13 * abs(ref)
     return
 
 
