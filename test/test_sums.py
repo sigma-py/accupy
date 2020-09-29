@@ -1,3 +1,4 @@
+import dufte
 import matplotlib.pyplot as plt
 import numpy
 import perfplot
@@ -10,24 +11,23 @@ import accupy
 def test_ksum2(cond):
     p, ref, _ = accupy.generate_ill_conditioned_sum(100, cond)
     assert abs(accupy.ksum(p, K=2) - ref) < 1.0e-15 * abs(ref)
-    return
 
 
 @pytest.mark.parametrize("cond", [1.0, 1.0e15, 1.0e30])
 def test_ksum3(cond):
     p, ref, _ = accupy.generate_ill_conditioned_sum(100, cond)
     assert abs(accupy.ksum(p, K=3) - ref) < 1.0e-15 * abs(ref)
-    return
 
 
 @pytest.mark.parametrize("cond", [1.0, 1.0e15, 1.0e30, 1.0e35])
 def test_fsum(cond):
     p, ref, _ = accupy.generate_ill_conditioned_sum(100, cond)
     assert abs(accupy.fsum(p) - ref) < 1.0e-15 * abs(ref)
-    return
 
 
-def test_accuracy_comparison_illcond(target_conds=None):
+def test_accuracy_comparison_illcond(filename=None, target_conds=None):
+    plt.style.use(dufte.style)
+
     if target_conds is None:
         target_conds = [10 ** k for k in range(1, 2)]
 
@@ -65,25 +65,20 @@ def test_accuracy_comparison_illcond(target_conds=None):
     for label, color, d in zip(labels, colors, data.T):
         plt.loglog(condition_numbers, d, label=label, color=color)
 
-    lgd = plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.0)
-    plt.grid()
-    plt.ylim(5.0e-18, 1.0)
+    dufte.legend()
     plt.xlabel("condition number")
     plt.ylabel("relative error")
-    plt.gca().set_aspect(1.3)
+    # plt.gca().set_aspect(1.3)
 
     # plt.show()
     # <https://stackoverflow.com/a/10154763/353337>
-    plt.savefig(
-        "accuracy-sums.svg",
-        transparent=True,
-        bbox_extra_artists=(lgd,),
-        bbox_inches="tight",
-    )
-    return
+    if filename:
+        plt.savefig(filename, transparent=True, bbox_inches="tight")
 
 
-def test_speed_comparison1(n_range=None):
+def test_speed_comparison1(filename=None, n_range=None):
+    plt.style.use(dufte.style)
+
     if n_range is None:
         n_range = [2 ** k for k in range(2)]
 
@@ -113,19 +108,15 @@ def test_speed_comparison1(n_range=None):
         logx=True,
         logy=True,
     )
-    plt.gca().set_aspect(0.5)
-    lgd = plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.0)
+
     # plt.show()
-    plt.savefig(
-        "speed-comparison1.svg",
-        transparent=True,
-        bbox_extra_artists=(lgd,),
-        bbox_inches="tight",
-    )
-    return
+    if filename:
+        plt.savefig(filename, transparent=True, bbox_inches="tight")
 
 
-def test_speed_comparison2(n_range=None):
+def test_speed_comparison2(filename=None, n_range=None):
+    plt.style.use(dufte.style)
+
     if n_range is None:
         n_range = [2 ** k for k in range(2)]
 
@@ -155,53 +146,39 @@ def test_speed_comparison2(n_range=None):
         logx=True,
         logy=True,
     )
-    plt.gca().set_aspect(0.5)
-    lgd = plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.0)
+
     # plt.show()
-    plt.savefig(
-        "speed-comparison2.svg",
-        transparent=True,
-        bbox_extra_artists=(lgd,),
-        bbox_inches="tight",
-    )
-    return
+    if filename:
+        plt.savefig(filename, transparent=True, bbox_inches="tight")
 
 
 def test_knuth_sum():
     a16 = numpy.float16(1.0e1)
     b16 = numpy.float16(1.0e-1)
-
     x16, y16 = accupy.knuth_sum(a16, b16)
-
     xy = numpy.float64(x16) + numpy.float64(y16)
     ab = numpy.float64(a16) + numpy.float64(b16)
-
     assert abs(xy - ab) < 1.0e-15 * ab
-    return
 
 
 def test_decker_sum():
     a16 = numpy.float16(1.0e1)
     b16 = numpy.float16(1.0e-1)
-
     x16, y16 = accupy.decker_sum(a16, b16)
-
     xy = numpy.float64(x16) + numpy.float64(y16)
     ab = numpy.float64(a16) + numpy.float64(b16)
-
     assert abs(xy - ab) < 1.0e-15 * ab
-    return
 
 
 def test_discontiguous():
     x = numpy.random.rand(3, 10).T
-
     accupy.ksum(x.T)
     accupy.fsum(x.T)
-    return
 
 
 if __name__ == "__main__":
-    # test_accuracy_comparison_illcond([10 ** k for k in range(0, 37, 1)])
-    # test_speed_comparison1(n_range=[2**k for k in range(15)])
-    test_speed_comparison2(n_range=[2 ** k for k in range(15)])
+    # test_accuracy_comparison_illcond(
+    #     "accuracy-sum.svg", [10 ** k for k in range(0, 37, 1)]
+    # )
+    # test_speed_comparison1("speed-comparison1.svg", n_range=[2 ** k for k in range(15)])
+    test_speed_comparison2("speed-comparison2.svg", n_range=[2 ** k for k in range(15)])
