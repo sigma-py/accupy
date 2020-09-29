@@ -28,8 +28,8 @@ def has_flag(compiler, flagname):
     """Return a boolean indicating whether a flag name is supported on
     the specified compiler.
     """
-    import tempfile
     import os
+    import tempfile
 
     with tempfile.NamedTemporaryFile("w", suffix=".cpp", delete=False) as f:
         f.write("int main (int argc, char **argv) { return 0; }")
@@ -91,7 +91,7 @@ class BuildExt(build_ext):
 
 setup(
     name="accupy",
-    version="0.3.2",
+    version="0.3.3",
     packages=find_packages(),
     ext_modules=ext_modules,
     url="https://github.com/nschloe/accupy",

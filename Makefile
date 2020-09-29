@@ -1,11 +1,11 @@
 # This should best be read from setup.{py,cfg}
-VERSION="0.3.0"
+VERSION=0.3.3
 
 default:
 	@echo "\"make publish\"?"
 
 # https://packaging.python.org/distributing/#id72
-upload: setup.py
+upload: clean
 	# Make sure we're on the master branch
 	@if [ "$(shell git rev-parse --abbrev-ref HEAD)" != "master" ]; then exit 1; fi
 	rm -rf dist/*
@@ -26,7 +26,7 @@ clean:
 	@rm -rf *.egg-info/ build/ dist/ MANIFEST
 
 format:
-	isort -rc .
+	isort .
 	black .
 
 black:
