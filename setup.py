@@ -1,7 +1,6 @@
 # https://github.com/pybind/python_example
 from pybind11.setup_helpers import Pybind11Extension, build_ext
 from setuptools import setup
-from setuptools.command.build_ext import build_ext
 
 ext_modules = [
     Pybind11Extension(
