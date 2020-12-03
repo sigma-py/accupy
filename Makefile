@@ -1,5 +1,4 @@
-# This should best be read from setup.{py,cfg}
-VERSION=0.3.3
+VERSION=$(shell python3 -c "from configparser import ConfigParser; p = ConfigParser(); p.read('setup.cfg'); print(p['metadata']['version'])")
 
 default:
 	@echo "\"make publish\"?"
@@ -8,7 +7,6 @@ default:
 upload: clean
 	# Make sure we're on the master branch
 	@if [ "$(shell git rev-parse --abbrev-ref HEAD)" != "master" ]; then exit 1; fi
-	rm -rf dist/*
 	python3 setup.py sdist
 	twine upload dist/*.tar.gz
 
@@ -28,6 +26,7 @@ clean:
 format:
 	isort .
 	black .
+	blacken-docs README.md
 
 black:
 	black .
