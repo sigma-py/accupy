@@ -3,15 +3,15 @@
   <p align="center">Accurate sums and (dot) products for Python.</p>
 </p>
 
-[![CircleCI](https://img.shields.io/circleci/project/github/nschloe/accupy/master.svg?style=flat-square)](https://circleci.com/gh/nschloe/accupy/tree/master)
-[![codecov](https://img.shields.io/codecov/c/github/nschloe/accupy.svg?style=flat-square)](https://codecov.io/gh/nschloe/accupy)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=flat-square)](https://github.com/psf/black)
-[![accurate](https://img.shields.io/badge/accurate-very-brightgreen.svg?style=flat-square)](https://github.com/nschloe/accupy)
-[![PyPI pyversions](https://img.shields.io/pypi/pyversions/accupy.svg?style=flat-square)](https://pypi.org/pypi/accupy/)
 [![PyPi Version](https://img.shields.io/pypi/v/accupy.svg?style=flat-square)](https://pypi.org/project/accupy)
+[![PyPI pyversions](https://img.shields.io/pypi/pyversions/accupy.svg?style=flat-square)](https://pypi.org/pypi/accupy/)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1185173.svg?style=flat-square)](https://doi.org/10.5281/zenodo.1185173)
 [![GitHub stars](https://img.shields.io/github/stars/nschloe/accupy.svg?style=flat-square&logo=github&label=Stars&logoColor=white)](https://github.com/nschloe/accupy)
 [![PyPi downloads](https://img.shields.io/pypi/dm/accupy.svg?style=flat-square)](https://pypistats.org/packages/accupy)
+
+[![gh-actions](https://img.shields.io/github/workflow/status/nschloe/accupy/ci?style=flat-square)](https://github.com/nschloe/accupy/actions?query=workflow%3Aci)
+[![codecov](https://img.shields.io/codecov/c/github/nschloe/accupy.svg?style=flat-square)](https://codecov.io/gh/nschloe/accupy)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=flat-square)](https://github.com/psf/black)
 
 ### Sums
 

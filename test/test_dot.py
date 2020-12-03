@@ -80,13 +80,10 @@ def test_speed_comparison1(filename=None, n_range=None):
             lambda xy: accupy.fdot(*xy),
         ],
         labels=["numpy.dot", "accupy.kdot[2]", "accupy.kdot[3]", "accupy.fdot"],
-        colors=plt.rcParams["axes.prop_cycle"].by_key()["color"][:4],
         n_range=n_range,
-        title="dot(random(n, 100), random(100, n))",
         xlabel="n",
-        logx=True,
-        logy=True,
     )
+    plt.title("dot(random(n, 100), random(100, n))")
 
     # plt.show()
     if filename:
@@ -107,13 +104,12 @@ def test_speed_comparison2(filename=None, n_range=None):
             lambda xy: accupy.fdot(*xy),
         ],
         labels=["numpy.dot", "accupy.kdot[2]", "accupy.kdot[3]", "accupy.fdot"],
-        colors=plt.rcParams["axes.prop_cycle"].by_key()["color"][:4],
         n_range=n_range,
-        title="dot(random(100, n), random(n, 100))",
         xlabel="n",
         logx=True,
         logy=True,
     )
+    plt.title("dot(random(100, n), random(n, 100))")
     # plt.show()
 
     if filename:
