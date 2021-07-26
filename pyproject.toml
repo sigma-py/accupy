@@ -2,6 +2,8 @@
 requires = ["setuptools>=42", "wheel", "pybind11>=2.6.0"]
 build-backend = "setuptools.build_meta"
 
+[tool.isort]
+profile = "black"
 
 [tool.pylint.messages_control]
 max-line-length = 88
