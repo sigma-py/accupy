@@ -25,7 +25,7 @@ def test_fsum(cond):
     assert abs(accupy.fsum(p) - ref) < 1.0e-15 * abs(ref)
 
 
-def test_accuracy_comparison_illcond(filename=None, target_conds=None):
+def test_accuracy_comparison_illcond(target_conds=None):
     plt.style.use(dufte.style)
 
     if target_conds is None:
@@ -67,16 +67,11 @@ def test_accuracy_comparison_illcond(filename=None, target_conds=None):
 
     dufte.legend()
     plt.xlabel("condition number")
-    plt.ylabel("relative error")
+    dufte.ylabel("relative error")
     # plt.gca().set_aspect(1.3)
 
-    # plt.show()
-    # <https://stackoverflow.com/a/10154763/353337>
-    if filename:
-        plt.savefig(filename, transparent=True, bbox_inches="tight")
 
-
-def test_speed_comparison1(filename=None, n_range=None):
+def test_speed_comparison1(n_range=None):
     plt.style.use(dufte.style)
 
     if n_range is None:
@@ -106,12 +101,8 @@ def test_speed_comparison1(filename=None, n_range=None):
     )
     plt.title("Sum(random(n, 100))")
 
-    # plt.show()
-    if filename:
-        plt.savefig(filename, transparent=True, bbox_inches="tight")
 
-
-def test_speed_comparison2(filename=None, n_range=None):
+def test_speed_comparison2(n_range=None):
     plt.style.use(dufte.style)
 
     if n_range is None:
@@ -141,10 +132,6 @@ def test_speed_comparison2(filename=None, n_range=None):
     )
     plt.title("Sum(random(100, n))")
 
-    # plt.show()
-    if filename:
-        plt.savefig(filename, transparent=True, bbox_inches="tight")
-
 
 def test_knuth_sum():
     a16 = numpy.float16(1.0e1)
@@ -171,8 +158,14 @@ def test_discontiguous():
 
 
 if __name__ == "__main__":
-    # test_accuracy_comparison_illcond(
-    #     "accuracy-sum.svg", [10 ** k for k in range(0, 37, 1)]
-    # )
-    # test_speed_comparison1("speed-comparison1.svg", n_range=[2 ** k for k in range(15)])
-    test_speed_comparison2("speed-comparison2.svg", n_range=[2 ** k for k in range(15)])
+    test_accuracy_comparison_illcond([10 ** k for k in range(0, 37, 1)])
+    plt.savefig("accuracy-sum.svg", transparent=True, bbox_inches="tight")
+    plt.close()
+
+    test_speed_comparison1(n_range=[2 ** k for k in range(15)])
+    plt.savefig("speed-comparison1.svg", transparent=True, bbox_inches="tight")
+    plt.close()
+
+    test_speed_comparison2(n_range=[2 ** k for k in range(15)])
+    plt.savefig("speed-comparison2.svg", transparent=True, bbox_inches="tight")
+    plt.close()
