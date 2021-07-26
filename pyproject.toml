@@ -1,3 +1,14 @@
 [build-system]
 requires = ["setuptools>=42", "wheel", "pybind11>=2.6.0"]
 build-backend = "setuptools.build_meta"
+
+
+[tool.pylint.messages_control]
+max-line-length = 88
+disable = [
+  "invalid-name",
+  "missing-function-docstring",
+  "missing-module-docstring",
+  "import-error",
+  "duplicate-code",
+]
