@@ -25,7 +25,7 @@ def test_fdot(cond):
     assert abs(accupy.fdot(x, y) - ref) < 1.0e-13 * abs(ref)
 
 
-def test_accuracy_comparison_illcond(filename=None, target_cond=None):
+def test_accuracy_comparison_illcond(target_cond=None):
     plt.style.use(dufte.style)
 
     if target_cond is None:
@@ -56,15 +56,10 @@ def test_accuracy_comparison_illcond(filename=None, target_cond=None):
 
     dufte.legend()
     plt.xlabel("condition number")
-    plt.ylabel("relative error")
-
-    # plt.show()
-    # <https://stackoverflow.com/a/10154763/353337>
-    if filename:
-        plt.savefig(filename, transparent=True, bbox_inches="tight")
+    dufte.ylabel("relative error")
 
 
-def test_speed_comparison1(filename=None, n_range=None):
+def test_speed_comparison1(n_range=None):
     plt.style.use(dufte.style)
 
     if n_range is None:
@@ -85,12 +80,8 @@ def test_speed_comparison1(filename=None, n_range=None):
     )
     plt.title("dot(random(n, 100), random(100, n))")
 
-    # plt.show()
-    if filename:
-        plt.savefig(filename, transparent=True, bbox_inches="tight")
 
-
-def test_speed_comparison2(filename=None, n_range=None):
+def test_speed_comparison2(n_range=None):
     if n_range is None:
         n_range = [2 ** k for k in range(2)]
 
@@ -110,10 +101,6 @@ def test_speed_comparison2(filename=None, n_range=None):
         logy=True,
     )
     plt.title("dot(random(100, n), random(n, 100))")
-    # plt.show()
-
-    if filename:
-        plt.savefig(filename, transparent=True, bbox_inches="tight")
 
 
 def test_discontiguous():
@@ -124,12 +111,14 @@ def test_discontiguous():
 
 
 if __name__ == "__main__":
-    # test_accuracy_comparison_illcond(
-    #     "accuracy-dot.svg", [10 ** k for k in range(0, 37, 1)]
-    # )
-    # test_speed_comparison1(
-    #     "speed-comparison-dot1.svg", n_range=[2 ** k for k in range(8)]
-    # )
-    test_speed_comparison2(
-        "speed-comparison-dot2.svg", n_range=[2 ** k for k in range(8)]
-    )
+    test_accuracy_comparison_illcond([10 ** k for k in range(0, 37, 1)])
+    plt.savefig("accuracy-dot.svg", transparent=True, bbox_inches="tight")
+    plt.close()
+
+    test_speed_comparison1(n_range=[2 ** k for k in range(8)])
+    plt.savefig("speed-comparison-dot1.svg", transparent=True, bbox_inches="tight")
+    plt.close()
+
+    test_speed_comparison2(n_range=[2 ** k for k in range(8)])
+    plt.savefig("speed-comparison-dot2.svg", transparent=True, bbox_inches="tight")
+    plt.close()
