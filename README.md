@@ -50,7 +50,7 @@ Let's compare them.
 
 #### Accuracy comparison (sum)
 
-![](https://nschloe.github.io/accupy/accuracy-sums.svg)
+![](https://nschloe.github.io/accupy/accuracy-sum.svg)
 
 As expected, the naive
 [sum](https://docs.python.org/3/library/functions.html#sum) performs very badly
