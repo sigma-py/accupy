@@ -20,29 +20,33 @@
 Summing up values in a list can get tricky if the values are floating point
 numbers; digit cancellation can occur and the result may come out wrong. A
 classical example is the sum
+
 ```
 1.0e16 + 1.0 - 1.0e16
 ```
+
 The actual result is `1.0`, but in double precision, this will result in `0.0`.
 While in this example the failure is quite obvious, it can get a lot more
 tricky than that. accupy provides
+
 ```python
 p, exact, cond = accupy.generate_ill_conditioned_sum(100, 1.0e20)
 ```
+
 which, given a length and a target condition number, will produce an array of
 floating point numbers that is hard to sum up.
 
 accupy has the following methods for summation:
 
-  * `accupy.kahan_sum(p)`: [Kahan
-    summation](https://en.wikipedia.org/wiki/Kahan_summation_algorithm)
+- `accupy.kahan_sum(p)`: [Kahan
+  summation](https://en.wikipedia.org/wiki/Kahan_summation_algorithm)
 
-  * `accupy.fsum(p)`: A vectorization wrapper around
-    [math.fsum](https://docs.python.org/3/library/math.html#math.fsum) (which
-    uses Shewchuck's algorithm [[1]](#references) (see also
-    [here](https://code.activestate.com/recipes/393090/))).
+- `accupy.fsum(p)`: A vectorization wrapper around
+  [math.fsum](https://docs.python.org/3/library/math.html#math.fsum) (which
+  uses Shewchuck's algorithm [[1]](#references) (see also
+  [here](https://code.activestate.com/recipes/393090/))).
 
-  * `accupy.ksum(p, K=2)`: Summation in K-fold precision (from [[2]](#references))
+- `accupy.ksum(p, K=2)`: Summation in K-fold precision (from [[2]](#references))
 
 All summation methods sum the first dimension of a multidimensional NumPy array.
 
@@ -67,7 +71,6 @@ increasing `K` helps with worse conditions.
 Shewchuck's algorithm in `math.fsum` always gives the correct result to full
 floating point precision.
 
-
 #### Runtime comparison (sum)
 
 ![](https://nschloe.github.io/accupy/speed-comparison1.svg)
@@ -82,21 +85,23 @@ the fastest (`numpy.sum`), and the most accurate the slowest (`accupy.fsum`).
 
 accupy has the following methods for dot products:
 
-  * `accupy.fdot(p)`: A transformation of the dot product of length _n_ into a
-    sum of length _2n_, computed with
-    [math.fsum](https://docs.python.org/3/library/math.html#math.fsum)
+- `accupy.fdot(p)`: A transformation of the dot product of length _n_ into a
+  sum of length _2n_, computed with
+  [math.fsum](https://docs.python.org/3/library/math.html#math.fsum)
 
-  * `accupy.kdot(p, K=2)`: Dot product in K-fold precision (from
-    [[2]](#references))
+- `accupy.kdot(p, K=2)`: Dot product in K-fold precision (from
+  [[2]](#references))
 
 Let's compare them.
 
 #### Accuracy comparison (dot)
 
 accupy can construct ill-conditioned dot products with
+
 ```python
 x, y, exact, cond = accupy.generate_ill_conditioned_dot_product(100, 1.0e20)
 ```
+
 With this, the accuracy of the different methods is compared.
 
 ![](https://nschloe.github.io/accupy/accuracy-dot.svg)
@@ -112,7 +117,6 @@ As for sums, `numpy.dot` is the least accurate, followed by instanced of `kdot`.
 NumPy's `numpy.dot` is _much_ faster than all alternatives provided by accupy.
 This is because the bookkeeping of truncation errors takes more steps, but
 mostly because of NumPy's highly optimized dot implementation.
-
 
 ### References
 
@@ -134,17 +138,17 @@ Debian/Ubuntu by
 ### Installation
 
 accupy is [available from the Python Package Index](https://pypi.org/project/accupy/), so with
+
 ```
 pip install accupy
 ```
+
 you can install.
 
 ### Testing
 
 To run the tests, just check out this repository and type
+
 ```
 MPLBACKEND=Agg pytest
 ```
-
-### License
-accupy is published under the [GPLv3+ license](https://www.gnu.org/licenses/gpl-3.0.en.html).
