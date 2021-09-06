@@ -25,15 +25,15 @@ jobs:
       matrix:
         python-version: [3.7, 3.8, 3.9]
     steps:
-    - uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python-version }}
-    - uses: actions/checkout@v2
-    - name: Install system dependencies
-      run: sudo apt-get install -y libeigen3-dev
-    - name: Test with tox
-      run: |
-        pip install tox
-        tox
-    - uses: codecov/codecov-action@v1
-      if: ${{ matrix.python-version == '3.9' }}
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - uses: actions/checkout@v2
+      - name: Install system dependencies
+        run: sudo apt-get install -y libeigen3-dev
+      - name: Test with tox
+        run: |
+          pip install tox
+          tox
+      - uses: codecov/codecov-action@v1
+        if: ${{ matrix.python-version == '3.9' }}
