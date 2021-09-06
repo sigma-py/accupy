@@ -1,5 +1,6 @@
 import _accupy
-import numpy
+import numpy as np
+from numpy.typing import ArrayLike
 
 from .sums import fsum, ksum
 
@@ -16,29 +17,31 @@ from .sums import fsum, ksum
 #     return p + s
 
 
-def kdot(x, y, K=2):
-    """Algorithm 5.10. Dot product algorithm in K-fold working precision,
-    K >= 3.
-    """
+def kdot(x: ArrayLike, y: ArrayLike, K: int = 2) -> float:
+    """Algorithm 5.10. Dot product algorithm in K-fold working precision, K >= 3."""
+    x = np.asarray(x)
+    y = np.asarray(y)
+
     xx = x.reshape(-1, x.shape[-1])
     yy = y.reshape(y.shape[0], -1)
 
-    xx = numpy.ascontiguousarray(xx)
-    yy = numpy.ascontiguousarray(yy)
+    xx = np.ascontiguousarray(xx)
+    yy = np.ascontiguousarray(yy)
 
     r = _accupy.kdot_helper(xx, yy).reshape((-1,) + x.shape[:-1] + y.shape[1:])
     return ksum(r, K - 1)
 
 
-def fdot(x, y):
-    """Algorithm 5.10. Dot product algorithm in K-fold working precision,
-    K >= 3.
-    """
+def fdot(x: ArrayLike, y: ArrayLike) -> float:
+    """Algorithm 5.10. Dot product algorithm in K-fold working precision, K >= 3."""
+    x = np.asarray(x)
+    y = np.asarray(y)
+
     xx = x.reshape(-1, x.shape[-1])
     yy = y.reshape(y.shape[0], -1)
 
-    xx = numpy.ascontiguousarray(xx)
-    yy = numpy.ascontiguousarray(yy)
+    xx = np.ascontiguousarray(xx)
+    yy = np.ascontiguousarray(yy)
 
     r = _accupy.kdot_helper(xx, yy).reshape((-1,) + x.shape[:-1] + y.shape[1:])
     return fsum(r)
