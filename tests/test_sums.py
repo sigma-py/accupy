@@ -1,10 +1,16 @@
 import dufte
 import matplotlib.pyplot as plt
-import numpy
+import numpy as np
 import perfplot
 import pytest
 
 import accupy
+
+
+def test_cond():
+    cond = accupy.cond([1.0, 1.0e-16, -1.0])
+    ref = 2.0e16
+    assert abs(cond - ref) < 1.0e-13 * abs(ref)
 
 
 @pytest.mark.parametrize("cond", [1.0, 1.0e15])
@@ -33,7 +39,7 @@ def test_accuracy_comparison_illcond(target_conds=None):
 
     kernels = [
         sum,
-        numpy.sum,
+        np.sum,
         accupy.kahan_sum,
         lambda p: accupy.ksum(p, K=2),
         lambda p: accupy.ksum(p, K=3),
@@ -41,7 +47,7 @@ def test_accuracy_comparison_illcond(target_conds=None):
     ]
     labels = [
         "sum",
-        "numpy.sum",
+        "np.sum",
         "accupy.kahan_sum",
         "accupy.ksum[2]",
         "accupy.ksum[3]",
@@ -49,16 +55,16 @@ def test_accuracy_comparison_illcond(target_conds=None):
     ]
     colors = plt.rcParams["axes.prop_cycle"].by_key()["color"][: len(labels)]
 
-    data = numpy.empty((len(target_conds), len(kernels)))
-    condition_numbers = numpy.empty(len(target_conds))
-    numpy.random.seed(0)
+    data = np.empty((len(target_conds), len(kernels)))
+    condition_numbers = np.empty(len(target_conds))
+    np.random.seed(0)
     for k, target_cond in enumerate(target_conds):
         p, ref, C = accupy.generate_ill_conditioned_sum(1000, target_cond)
         condition_numbers[k] = C
         data[k] = [abs(kernel(p) - ref) / abs(ref) for kernel in kernels]
 
     # sort
-    s = numpy.argsort(condition_numbers)
+    s = np.argsort(condition_numbers)
     condition_numbers = condition_numbers[s]
     data = data[s]
 
@@ -77,12 +83,12 @@ def test_speed_comparison1(n_range=None):
     if n_range is None:
         n_range = [2 ** k for k in range(2)]
 
-    numpy.random.seed(0)
+    np.random.seed(0)
     perfplot.plot(
-        setup=lambda n: numpy.random.rand(n, 100),
+        setup=lambda n: np.random.rand(n, 100),
         kernels=[
             sum,
-            lambda p: numpy.sum(p, axis=0),
+            lambda p: np.sum(p, axis=0),
             accupy.kahan_sum,
             lambda p: accupy.ksum(p, K=2),
             lambda p: accupy.ksum(p, K=3),
@@ -90,7 +96,7 @@ def test_speed_comparison1(n_range=None):
         ],
         labels=[
             "sum",
-            "numpy.sum",
+            "np.sum",
             "accupy.kahan_sum",
             "accupy.ksum[2]",
             "accupy.ksum[3]",
@@ -108,12 +114,12 @@ def test_speed_comparison2(n_range=None):
     if n_range is None:
         n_range = [2 ** k for k in range(2)]
 
-    numpy.random.seed(0)
+    np.random.seed(0)
     perfplot.plot(
-        setup=lambda n: numpy.random.rand(100, n),
+        setup=lambda n: np.random.rand(100, n),
         kernels=[
             sum,
-            lambda p: numpy.sum(p, axis=0),
+            lambda p: np.sum(p, axis=0),
             accupy.kahan_sum,
             lambda p: accupy.ksum(p, K=2),
             lambda p: accupy.ksum(p, K=3),
@@ -121,7 +127,7 @@ def test_speed_comparison2(n_range=None):
         ],
         labels=[
             "sum",
-            "numpy.sum",
+            "np.sum",
             "accupy.kahan_sum",
             "accupy.ksum[2]",
             "accupy.ksum[3]",
@@ -134,25 +140,25 @@ def test_speed_comparison2(n_range=None):
 
 
 def test_knuth_sum():
-    a16 = numpy.float16(1.0e1)
-    b16 = numpy.float16(1.0e-1)
+    a16 = np.float16(1.0e1)
+    b16 = np.float16(1.0e-1)
     x16, y16 = accupy.knuth_sum(a16, b16)
-    xy = numpy.float64(x16) + numpy.float64(y16)
-    ab = numpy.float64(a16) + numpy.float64(b16)
+    xy = np.float64(x16) + np.float64(y16)
+    ab = np.float64(a16) + np.float64(b16)
     assert abs(xy - ab) < 1.0e-15 * ab
 
 
 def test_decker_sum():
-    a16 = numpy.float16(1.0e1)
-    b16 = numpy.float16(1.0e-1)
+    a16 = np.float16(1.0e1)
+    b16 = np.float16(1.0e-1)
     x16, y16 = accupy.decker_sum(a16, b16)
-    xy = numpy.float64(x16) + numpy.float64(y16)
-    ab = numpy.float64(a16) + numpy.float64(b16)
+    xy = np.float64(x16) + np.float64(y16)
+    ab = np.float64(a16) + np.float64(b16)
     assert abs(xy - ab) < 1.0e-15 * ab
 
 
 def test_discontiguous():
-    x = numpy.random.rand(3, 10).T
+    x = np.random.rand(3, 10).T
     accupy.ksum(x.T)
     accupy.fsum(x.T)
 

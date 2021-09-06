@@ -1,9 +1,32 @@
 import math
-from typing import Tuple
+from typing import Optional, Tuple
 
 import numpy as np
 import pyfma
 from mpmath import mp
+from numpy.typing import ArrayLike
+
+from .dot import fdot, fsum
+
+
+def cond(
+    x: ArrayLike, y: Optional[ArrayLike] = None, dps: Optional[int] = None
+) -> float:
+    """Compute the condition number of a sum (if only x is given) or a dot-product (if
+    both x and y are given).
+    """
+    if dps is None:
+        sum_exact = fsum
+        dot_exact = fdot
+    else:
+        mp.dps = dps
+        sum_exact = mp.fsum
+        dot_exact = mp.fdot
+
+    if y is None:
+        return sum_exact(np.abs(x)) / np.abs(sum_exact(x))
+
+    return 2 * dot_exact(np.abs(x), np.abs(y)) / abs(dot_exact(x, y))
 
 
 def generate_ill_conditioned_sum(
@@ -21,15 +44,15 @@ def generate_ill_conditioned_sum(
 
     out = np.random.permutation(res.flatten())
 
-    def sum_exact(p):
-        mp.dps = dps
-        return mp.fsum(p)
+    mp.dps = dps
+    sum_exact = mp.fsum
 
     exact = sum_exact(out)
-    # cond = sum_exact(np.abs(out)) / abs(exact)
-    cond = C / 2
 
-    return out, exact, cond
+    # condition = fsum(np.abs(out)) / abs(exact)
+    condition = C / 2
+
+    return out, exact, condition
 
 
 def generate_ill_conditioned_dot_product(
@@ -60,11 +83,8 @@ def generate_ill_conditioned_dot_product(
     x[:n2] = (2 * rx - 1) * 2 ** e
     y[:n2] = (2 * ry - 1) * 2 ** e
 
-    def dot_exact(x, y):
-        mp.dps = dps
-        # convert to list first, see
-        # <https://github.com/fredrik-johansson/mpmath/pull/385>
-        return mp.fdot(x.tolist(), y.tolist())
+    mp.dps = dps
+    dot_exact = mp.fdot
 
     # for i=n2+1:n and v=1:i,
     #     generate x_i, y_i such that (*) x(v)’*y(v) ~ 2^e(i-n2)

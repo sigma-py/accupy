@@ -36,6 +36,13 @@ p, exact, cond = accupy.generate_ill_conditioned_sum(100, 1.0e20)
 which, given a length and a target condition number, will produce an array of
 floating point numbers that is hard to sum up.
 
+Given one or two vectors, accupy can compute the condition of the sum or dot product via
+
+```python
+accupy.cond(x)
+accupy.cond(x, y)
+```
+
 accupy has the following methods for summation:
 
 - `accupy.kahan_sum(p)`: [Kahan
